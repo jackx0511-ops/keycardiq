@@ -673,7 +673,7 @@
             errorEl.style.display = 'none';
 
             try {
-                const response = await fetch('/api/list', {
+                const response = await fetch('/api/list.js', {
                     headers: { 'Authorization': `Bearer ${password}` }
                 });
 
@@ -703,7 +703,7 @@
             if (!savedToken) return;
 
             try {
-                const response = await fetch('/api/list', {
+                const response = await fetch('/api/list.js', {
                     headers: { 'Authorization': `Bearer ${savedToken}` }
                 });
                 if (response.ok) {
@@ -743,7 +743,7 @@
             text.textContent = 'جاري التحديث...';
 
             try {
-                const response = await fetch('/api/list', {
+                const response = await fetch('/api/list.js', {
                     headers: { 'Authorization': `Bearer ${authToken}` }
                 });
                 const data = await response.json();
