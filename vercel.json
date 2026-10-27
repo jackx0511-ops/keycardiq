@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "admin.html", "use": "@vercel/static" },
+    { "src": "api/**/*.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/admin", "dest": "/admin.html" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ],
+  "env": {
+    "CLOUDINARY_API_KEY": "744288725317255",
+    "CLOUDINARY_API_SECRET": "26c68WuaGdoHhjli_MU_llAA3PM",
+    "ADMIN_PASSWORD": "qi_admin_2026"
+  }
+}

